@@ -3,7 +3,9 @@ layout: post
 title: "Running OpenLDAP with docker"
 date: 2024-07-13 12:00:00 -0000
 author: "TimDude"
-categories: ssh_poc docker openldap
+categories:
+  - IT sec 
+  - ssh certificates
 tags: docker openldap
 ---
 

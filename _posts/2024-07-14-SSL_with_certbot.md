@@ -3,7 +3,9 @@ layout: post
 title: "SSL reverse proxy with Certbot & Nginx"
 date: 2024-07-14 12:00:00 -0000
 author: "TimDude"
-categories: ssh_poc nginx
+categories:
+  - IT Sec 
+  - ssh certificates
 tags: ssl certbot nginx
 ---
 

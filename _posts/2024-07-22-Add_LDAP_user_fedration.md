@@ -3,7 +3,9 @@ layout: post
 title: "Add LDAP user federation to Keycloak"
 date: 2024-07-22 12:00:00 -0000
 author: "TimDude"
-categories: ssh_poc  keycloak openldap
+categories:
+  - IT Sec 
+  - ssh certificates
 tags: Keycloak LDAP federation openldap
 ---
 
