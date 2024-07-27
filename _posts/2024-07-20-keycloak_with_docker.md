@@ -4,7 +4,7 @@ title: "Running Keycloak with docker"
 date: 2024-07-20 12:00:00 -0000
 author: "TimDude"
 categories:
-  - IT sec 
+  - IT Sec 
   - ssh certificates
 tags:
   - keycloak

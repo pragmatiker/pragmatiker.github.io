@@ -3,7 +3,9 @@ layout: post
 title: "Samsung M2020 on Raspberypi"
 date: 2024-07-24 21:00:00 -0000
 author: "TimDude"
-categories: raspberrypi cups
+categories: 
+  - raspberrypi
+  - cups
 tags: raspberrypi cups driver arm rastertospl
 ---
 
