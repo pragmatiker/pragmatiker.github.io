@@ -3,7 +3,9 @@ layout: post
 title: "Docker Compose via Systemd Service"
 date: 2024-07-12 12:00:00 -0000
 author: "TimDude"
-categories: ssh_poc docker
+categories:
+  - IT Sec
+  - ssh certificates
 tags: systemd docker docker-compose
 ---
 
