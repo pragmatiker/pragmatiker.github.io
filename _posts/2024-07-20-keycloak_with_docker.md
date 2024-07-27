@@ -3,8 +3,12 @@ layout: post
 title: "Running Keycloak with docker"
 date: 2024-07-20 12:00:00 -0000
 author: "TimDude"
-categories: ssh_poc docker keycloak
-tags: keycloak docker
+categories:
+  - IT sec 
+  - ssh certificates
+tags:
+  - keycloak
+  - docker
 ---
 
 OpenLDAP is already up and running. Time to add Keycloak and a Database.

@@ -6,7 +6,10 @@ author: "TimDude"
 categories:
   - IT sec 
   - ssh certificates
-tags: docker openldap
+tags:
+  - docker
+  - keycloak
+  - openldap
 ---
 
 Not really necessary, since Keycloak brings its own User Management, still I want to build an external User Database in LDAP.
