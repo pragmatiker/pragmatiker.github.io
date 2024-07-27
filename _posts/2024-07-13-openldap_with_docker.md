@@ -4,7 +4,7 @@ title: "Running OpenLDAP with docker"
 date: 2024-07-13 12:00:00 -0000
 author: "TimDude"
 categories:
-  - IT sec 
+  - IT Sec 
   - ssh certificates
 tags:
   - docker
