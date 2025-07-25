@@ -22,7 +22,7 @@ This sets the **post's date** and **URL slug** automatically.
 
 Each post needs this at the top:
 
-```yaml
+~~~
 ---
 title: "Your Post Title"
 date: YYYY-MM-DD
@@ -30,3 +30,19 @@ layout: post
 description: "Optional. Useful for SEO and feeds."
 tags: [optional, list, of, tags]
 ---
+~~~
+
+## 🖼️ Where to Put Pictures
+
+~~~
+assets/images/blog/YYYY-MM-DD-title/
+~~~
+example
+~~~
+assets/images/blog/2025-07-25-how-to-write-a-jekyll-post/header.jpg
+~~~
+reference like this:
+~~~
+![Header]({{ "/assets/images/blog/2025-07-25-how-to-write-a-jekyll-post/header.jpg" | relative_url }})
+~~~
+
