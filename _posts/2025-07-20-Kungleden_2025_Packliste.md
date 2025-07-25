@@ -6,7 +6,7 @@ author: "TimDude"
 categories: reisen ausrüstung
 tags: kungsleden packliste 
 imags:
-  - gear1.jpg
+  - gear.jpg
 ---
 
 Meine Packliste für den Kungsleden
