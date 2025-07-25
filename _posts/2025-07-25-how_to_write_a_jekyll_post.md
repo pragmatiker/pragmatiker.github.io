@@ -7,6 +7,8 @@ categories: blog
 tags: blog jekyll
 ---
 
+Hello my name is Johnny Cash
+
 ## 🗓️ Filename
 
 Create your post inside the `_posts/` folder.
