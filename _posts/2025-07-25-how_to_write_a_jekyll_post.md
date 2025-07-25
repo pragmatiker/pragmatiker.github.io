@@ -17,7 +17,7 @@ Use this format: YYYY-MM-DD-title-with-dashes.md
 
 This sets the **post's date** and **URL slug** automatically.
 
-##🧾 Front Matter
+## Front Matter
 
 Each post needs this at the top:
 
@@ -31,7 +31,7 @@ tags: [optional, list, of, tags]
 ---
 ~~~
 
-## 🖼️ Where to Put Pictures
+## Where to Put Pictures
 
 ~~~
 assets/images/blog/YYYY-MM-DD-title/
