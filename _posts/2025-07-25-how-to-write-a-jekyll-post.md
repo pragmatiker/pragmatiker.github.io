@@ -18,3 +18,15 @@ Use this format: YYYY-MM-DD-title-with-dashes.md
 This sets the **post's date** and **URL slug** automatically.
 
 ---
+## 🧾 Front Matter
+
+Each post needs this at the top:
+
+```yaml
+---
+title: "Your Post Title"
+date: YYYY-MM-DD
+layout: post
+description: "Optional. Useful for SEO and feeds."
+tags: [optional, list, of, tags]
+---
