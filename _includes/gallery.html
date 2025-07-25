@@ -1,0 +1,10 @@
+{% assign slug = page.path | split: '/' | last | split: '.' | first %}
+
+<div class="post-gallery">
+  {% for img in include.images %}
+    <img src="{{ '/assets/images/posts/' | append: slug | append: '/' | append: img | relative_url }}"
+         alt="Image {{ forloop.index }}"
+         loading="lazy"
+         style="max-width: 100%; margin-bottom: 1rem;">
+  {% endfor %}
+</div>
