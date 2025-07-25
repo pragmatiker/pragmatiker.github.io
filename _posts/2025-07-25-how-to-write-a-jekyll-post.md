@@ -3,12 +3,10 @@ layout: post
 title: "How to Write a Jekyll Post"
 date: 2025-07-25 10:00:00 -0000
 author: "TimDude"
-categories:
-  - blog
-tags:
-  - blog
-  - jekyll
+categories: blog
+tags: blog jekyll
 ---
+
 ## 🗓️ Filename
 
 Create your post inside the `_posts/` folder.
