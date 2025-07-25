@@ -5,6 +5,8 @@ date: 2025-07-25 10:00:00 -0000
 author: "TimDude"
 categories: reisen ausrüstung
 tags: kungsleden packliste 
+imags:
+  - gear1.jpg
 ---
 
 Meine Packliste für den Kungsleden
@@ -73,5 +75,6 @@ Abendessen:
 * Bifi
 * 20ml Olivenöl
 
+{% include gallery.html images=page.images %}
 
 
