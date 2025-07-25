@@ -59,12 +59,15 @@ Meine Packliste für den Kungsleden
 ## Verpflegung 8x
 Frühstück:
 * 100g Haferflocken + 40g Whey + 30g Erdnussbutter
+
 Snacks:
 * Raw Bite Cashew Riegel
 * Bifi
 * 50g Nussmix
+
 Recovery:
 * 70g Maltodextrose + 20g Whey
+
 Abendessen:
 * Trek `n Eat Malzeit
 * Bifi
