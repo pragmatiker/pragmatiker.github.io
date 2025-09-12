@@ -3,7 +3,7 @@ layout: post
 title: "Kungsleden 2025 - Packliste"
 date: 2025-07-25 10:00:00 -0000
 author: "TimDude"
-categories: reisen ausrüstung
+categories: ["Wandern", "Kungsleden 2025"]
 tags: kungsleden packliste 
 imags:
   - gear.jpg
