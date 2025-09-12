@@ -25,6 +25,8 @@ iface vmbr1 inet manual
 # Spin up a small Linux Vm
 
 ## Assign interfaces
+
+| interface | ip |
 |-----|-----|
 | eth0 | 192.168.178.5 |
 | eth1 | 10.10.0.1 |
