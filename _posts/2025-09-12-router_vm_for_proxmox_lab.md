@@ -3,7 +3,7 @@ layout: post
 title: "Router VM for my ProxMox Lab"
 date: 2025-07-25 10:00:00 -0000
 author: "TimDude"
-categories: ["Linux",  "AD CS Lab"]
+categories: ["Tech",  "AD CS Lab"]
 tags: ["proxmox", "linux", "routing"]
 ---
 
