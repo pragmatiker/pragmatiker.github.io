@@ -3,8 +3,8 @@ layout: post
 title: "Router VM for my ProxMox Lab"
 date: 2025-07-25 10:00:00 -0000
 author: "TimDude"
-categories: blog AD_CS_LAB
-tags: blog ProxMox
+categories: ["Linux",  "AD CS Lab"]
+tags: ["proxmox", "linux", "routing"]
 ---
 
 I have a dedicated Subnet on my ProxMox LAB so DHCP and DNS dont interfer with my home Network.
