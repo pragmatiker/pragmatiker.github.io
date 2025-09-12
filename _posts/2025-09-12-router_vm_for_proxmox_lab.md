@@ -11,8 +11,8 @@ I have a dedicated Subnet on my ProxMox LAB so DHCP and DNS dont interfer with m
 To be able to access machines on the dev Subnet of my Lab, i will set up a small router VM on ProxMox.
 
 
-
-On the ProxMox Box we will need to add a Bridge
+# Create an isolated bridge for the lab
+On the ProxMox Box we will need to edit /etc/network/interfaces
 ```
 auto vmbr1
 iface vmbr1 inet manual
@@ -21,3 +21,21 @@ iface vmbr1 inet manual
     bridge_fd 0
 ```
 {: file="/etc/network/interfaces" }
+
+# Spin up a small Linux Vm
+
+## Assign interfaces
+|-----|-----|
+| eth0 | 192.168.178.5 |
+| eth1 | 10.10.0.1 |
+
+## Activate routing
+Immediate activation
+```
+sysctl -w net.ipv4.ip_forward=1
+
+```
+Persisting the changes
+```
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+```
