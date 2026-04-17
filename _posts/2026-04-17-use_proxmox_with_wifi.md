@@ -62,6 +62,7 @@ auto wlp2s0
 iface wlp2s0 inet dhcp
     wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 ```
+{: file="/etc/network/interfaces" }
 
 Only your WiFI should have default route.
 Remove default gateway and brdiging from vmbr0
@@ -73,8 +74,6 @@ iface vmbr0 inet static
     bridge_stp off
     bridge_fd 0
 ```
-
-
 {: file="/etc/network/interfaces" }
 
 ## Make VMs able to use the internet
@@ -84,6 +83,7 @@ IP Forwarding
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
 sysctl --system
 ```
+{: file="/etc/sysctl.d/99-ip_forwarding.conf" }
 
 Iptables NAT and Forwarding Rules
 ```
