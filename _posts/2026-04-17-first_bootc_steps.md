@@ -61,6 +61,10 @@ skopeo copy \
   docker://localhost:5000/fedora-bootc:40 \
   --dest-tls-verify=false
 ```
+Verify:
+```
+curl http://localhost:5000/v2/_catalog
+```
 
 
  

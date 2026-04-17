@@ -3,7 +3,7 @@ layout: post
 title: "Using ProxMox with WiFi"
 date: 2026-04-17
 author: "TimDude"
-categories: ["Tech"]
+categories: ["Tech","Hypervisors"]
 tags: ["proxmox", "linux", "networking"]
 ---
 
