@@ -190,7 +190,8 @@ scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
 ```
 
 ### Create VM from Image
-On the Proxmox Host import the image and create Vm from it.
+
+On the Proxmox host, import the image and create a VM from it.
 
 ```
 qm create 9000 --name fedora-bootc --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
