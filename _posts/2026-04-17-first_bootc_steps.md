@@ -220,6 +220,9 @@ and then let the machine apply that image with `bootc upgrade`.
 
 ### Build new Container v2
 Create a Containerfile
+
+In practice, you would keep a single Containerfile and evolve it.
+We split it here into "Version 1" and "Version 2" for clarity.
 ```
 FROM 192.168.100.10:5000/fedora-bootc:40
 
