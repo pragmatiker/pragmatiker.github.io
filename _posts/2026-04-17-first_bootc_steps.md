@@ -84,26 +84,26 @@ Create a Containerfile
 ```
 FROM 192.168.100.10:5000/fedora-bootc:40
 
-RUN mkdir -p /etc/containers/registries.conf.d && \
-    cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
+### Version 1 ####
+RUN mkdir -p /etc/containers/registries.conf.d
+RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
 [[registry]]
 location = "192.168.100.10:5000"
 insecure = true
 EOF
 
 # Correct bootc kargs.d format: TOML
+RUN mkdir -p /usr/lib/bootc/kargs.d
 RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
 kargs = ["quiet", "loglevel=3"]
 EOF
 
 # Lower runtime console verbosity too
+RUN mkdir -p /usr/lib/sysctl.d
 RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
 kernel.printk = 3 4 1 3
 EOF
-
-# Add some basic tools. We save this for v3
-#RUN dnf install -y vim htop tmux && \
-#    dnf clean all
+### Version 1 END ###
 ```
 {: file="./Containerfile" }
 
@@ -209,3 +209,56 @@ sudo nmcli connection modify ens18 ipv4.dns "1.1.1.1"
 sudo nmcli connection up ens18
 ```
 
+## Updating the System with bootc
+Now the fun part.
+No more package manager.
+
+Lets build a new Version of the container and update the machine
+
+### Build new Container v2
+Create a Containerfile
+```
+FROM 192.168.100.10:5000/fedora-bootc:40
+
+### Version 1 ####
+RUN mkdir -p /etc/containers/registries.conf.d
+RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
+[[registry]]
+location = "192.168.100.10:5000"
+insecure = true
+EOF
+
+# Correct bootc kargs.d format: TOML
+RUN mkdir -p /usr/lib/bootc/kargs.d
+RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
+kargs = ["quiet", "loglevel=3"]
+EOF
+
+# Lower runtime console verbosity too
+RUN mkdir -p /usr/lib/sysctl.d
+RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
+kernel.printk = 3 4 1 3
+EOF
+### Version 1 END ###
+
+### Version 2 ###
+# Add some basic tools.
+RUN dnf install -y htop
+RUN dnf clean all
+### Version 2 END ###
+```
+{: file="./Containerfile" }
+
+Build and tag image
+Like before 2 Tags (current Version an latest)
+
+```
+podman build -t 192.168.100.10:5000/my-bootc:2 .
+podman tag 192.168.100.10:5000/my-bootc:2 192.168.100.10:5000/my-bootc:latest
+```
+
+Push to local registry
+```
+podman push --tls-verify=false 192.168.100.10:5000/my-bootc:1
+podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
+```
