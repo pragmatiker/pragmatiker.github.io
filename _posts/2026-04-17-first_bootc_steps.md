@@ -82,7 +82,7 @@ groups = ["wheel"]
 
 [[customizations.sshkey]]
 user = "therty"
-key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5Lfs2NpChZkyaVfG+ZZLcf+f7Lk6eqHy4ll1xnhhJGbR"
+key = "ssh-ed25519 AAAAC3NzaC....k6eqHy4ll1xnhhJGbR"
 ```
 {: file="./config.toml" }
 
@@ -114,7 +114,10 @@ Output:
 ./output/qcow2/disk.qcow2
 ```
 
-
+## 8. Copy to proxmox
+```
+scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
+```
 
 
 
