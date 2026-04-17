@@ -36,7 +36,7 @@ podman run -d \
 
 verify
 ```
-curl http://localhost:5000/v2/_catalog
+curl http://192.168.100.10:5000/v2/_catalog
 ```
 
 ## Allow insecure local registry (important)
@@ -46,7 +46,7 @@ sudo nano /etc/containers/registries.conf.d/local.conf
 
 ```
 [[registry]]
-location = "localhost:5000"
+location = "192.168.100.10:5000"
 insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
@@ -57,12 +57,12 @@ Example:
 ```
 skopeo copy \
   docker://quay.io/fedora/fedora-bootc:40 \
-  docker://localhost:5000/fedora-bootc:40 \
+  docker://192.168.100.10:5000/fedora-bootc:40 \
   --dest-tls-verify=false
 ```
 Verify:
 ```
-curl http://localhost:5000/v2/_catalog
+curl http://192.168.100.10:5000/v2/_catalog
 ```
 
 ## Prepare build workspace
@@ -79,15 +79,28 @@ because we mirror it into a local registry and the tag stays unchanged.
 
 Create a Containerfile
 ```
-FROM localhost:5000/fedora-bootc:40
+FROM 192.168.100.10:5000/fedora-bootc:40
 
-# Make system quieter on serial console
-RUN mkdir -p /usr/lib/bootc/kargs.d && \
-    echo "quiet loglevel=3" > /usr/lib/bootc/kargs.d/quiet.conf
+RUN mkdir -p /etc/containers/registries.conf.d && \
+    cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
+[[registry]]
+location = "192.168.100.10:5000"
+insecure = true
+EOF
 
-# Add some basic tools
-RUN dnf install -y vim htop tmux && \
-    dnf clean all
+# Correct bootc kargs.d format: TOML
+RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
+kargs = ["quiet", "loglevel=3"]
+EOF
+
+# Lower runtime console verbosity too
+RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
+kernel.printk = 3 4 1 3
+EOF
+
+# Add some basic tools. We save this for v3
+#RUN dnf install -y vim htop tmux && \
+#    dnf clean all
 ```
 {: file="./Containerfile" }
 
@@ -99,20 +112,20 @@ We use two tags:
 - a moving tag (`:latest`) for automatic upgrades
 
 ```
-podman build -t localhost:5000/my-bootc:1 .
-podman tag localhost:5000/my-bootc:1 localhost:5000/my-bootc:latest
+podman build -t 192.168.100.10:5000/my-bootc:1 .
+podman tag 192.168.100.10:5000/my-bootc:1 192.168.100.10:5000/my-bootc:latest
 ```
 
 Push to local registry
 ```
-podman push --tls-verify=false localhost:5000/my-bootc:1
-podman push --tls-verify=false localhost:5000/my-bootc:latest
+podman push --tls-verify=false 192.168.100.10:5000/my-bootc:1
+podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
 ```
 
 Verify
 ```
-curl http://localhost:5000/v2/_catalog
-curl http://localhost:5000/v2/my-bootc/tags/list
+curl http://192.168.100.10:5000/v2/_catalog
+curl http://192.168.100.10:5000/v2/my-bootc/tags/list
 ```
 
 
@@ -136,7 +149,7 @@ openssl passwd -6
 
 ## Build qcow2 image
 ```
-sudo podman pull localhost:5000/my-bootc:latest
+sudo podman pull 192.168.100.10:5000/my-bootc:latest
 
 sudo podman run --rm -it \
   --privileged \
@@ -149,7 +162,7 @@ sudo podman run --rm -it \
   --type qcow2 \
   --rootfs btrfs \
   --config /config.toml \
-  localhost:5000/my-bootc:latest
+  192.168.100.10:5000/my-bootc:latest
 ```
 
 Output:
