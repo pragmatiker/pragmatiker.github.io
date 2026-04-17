@@ -66,6 +66,12 @@ Verify:
 curl http://localhost:5000/v2/_catalog
 ```
 
+ ## Prepare build workspace
+ ```
+mkdir -p ~/bootc-build/output
+cd ~/bootc-build
+```
+
 ## Build your own bootc image (important)
 
 Using the Fedora base directly works, but it won’t auto-update because the tag is static.
@@ -103,12 +109,6 @@ curl http://localhost:5000/v2/_catalog
 curl http://localhost:5000/v2/my-bootc/tags/list
 ```
 
-
- ## Prepare build workspace
- ```
-mkdir -p ~/bootc-build/output
-cd ~/bootc-build
-```
 
 ## (Optional but recommended) Add user config
 ```
