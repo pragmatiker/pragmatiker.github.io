@@ -10,13 +10,14 @@ tags: ["proxmox", "bootc", "podman"]
 So lets experient with bootable containers.
 
 At a high level: we are not installing a system — we are building an image and booting it.
-# Goals:
+## Goals:
 * Boot a bootc Linux in proxmox
 * Edit the container
 * bootc updgrade
 
 
-## Base system prep
+## Registry
+### Base system prep
 
 ```
 sudo apt update
@@ -24,7 +25,7 @@ sudo apt install -y podman skopeo curl
 ```
 
 
-## Start local registry
+### Start local registry
 Run reg as a container
 ```
 podman run -d \
@@ -39,7 +40,10 @@ verify
 curl http://192.168.100.10:5000/v2/_catalog
 ```
 
-## Allow insecure local registry (important)
+## Build container
+
+### Allow insecure local registry (important)
+
 ```
 sudo nano /etc/containers/registries.conf.d/local.conf
 ```
@@ -51,7 +55,7 @@ insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
 
-## Mirror Fedora bootc base image
+### Mirror Fedora bootc base image
 
 Example:
 ```
@@ -65,14 +69,14 @@ Verify:
 curl http://192.168.100.10:5000/v2/_catalog
 ```
 
-## Prepare build workspace
+### Prepare build workspace
 
 ```
 mkdir -p ~/bootc-build/output
 cd ~/bootc-build
 ```
 
-## Build your own bootc image (important)
+### Build your own bootc image (important)
 
 Using the Fedora base directly works, but it won’t auto-update in our setup,
 because we mirror it into a local registry and the tag stays unchanged.
@@ -128,8 +132,15 @@ curl http://192.168.100.10:5000/v2/_catalog
 curl http://192.168.100.10:5000/v2/my-bootc/tags/list
 ```
 
+## Build DiskImage for Proxmox
 
-## (Optional but recommended) Add user config
+
+### Switch to build dir
+```
+cd ~/bootc-build
+```
+
+### (Optional but recommended) Add user config
 ```
 [[customizations.user]]
 name = "therty"
@@ -147,7 +158,7 @@ Generate password hash (example):
 openssl passwd -6
 ```
 
-## Build qcow2 image
+### Build qcow2 image
 ```
 sudo podman pull 192.168.100.10:5000/my-bootc:latest
 
@@ -170,11 +181,15 @@ Output:
 ./output/qcow2/disk.qcow2
 ```
 
-## Copy to proxmox
+
+## Create VM from Disk Image
+
+### Copy to proxmox
 ```
 scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
 ```
-## Create VM from Image
+
+### Create VM from Image
 On the Proxmox Host import the image and create Vm from it.
 
 ```
