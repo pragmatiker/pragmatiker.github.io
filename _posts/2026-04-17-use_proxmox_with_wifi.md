@@ -7,23 +7,23 @@ categories: ["Tech"]
 tags: ["proxmox", "linux", "networking"]
 ---
 
-If youre on the go with your LTE HotSpot, cant run cable in your home or have any other reason to use WiFi with ProxMox, I'll shed some light on your options.
+If youre on the go with your LTE HotSpot, cant run cable in your home or have any other reason to use WiFi with ProxMox.
+I'll shed some light on your options.
 
-Depending with which option you go, you will have working bridging or will have to use NAT or routing to connect to VMs.
+WiFi interfaces cannot be bridged like Ethernet in most setups, so when using onboard WiFi you must use routing/NAT instead of bridging.
 
 # Options
 * The simplest, a WiFi bridge like TPLINK WR802N you can plug into your ProxMox ethernet Port (bridging can work)
 * Install wpasupplicant and user the WiFI on your ProxMox box (bridging wont work)
 * Use USB Tethering of you LTE HotSpot or Android Phone (bridging wont work)
 
-The first ist pretty simple an straight forward, so i will look at the second option of using onbard WiFi.
-I tethered my Android phone temporarily to install packages from the internet, so it will also be described in the process.
+The first is pretty simple an straight forward, so i will look at the second option of using onbard WiFi.
 
 ProxMox setup wont configure WiFi you will have to do that your self and need to install some packages in the process.
 To access packages you will need an internet connection. 
 
 ## Temp inet access
-You can temporaily connect with ethernet to a router or use USB tethering.
+You can temporarily connect with ethernet to a router or use USB tethering.
 Either of them can be activated by the installer. But also manually.
 
 ```
@@ -33,7 +33,7 @@ dhclient enx00e04c010203
 
 ## Get packages
 ```
-apt get wpasupplicant iptable-persistent
+apt install wpasupplicant iptables-persistent
 ```
 
 ## Configure wpa-suplicant
@@ -55,25 +55,41 @@ wpa_passphrase YOUR_WIFI_NAME YOUR_PASSWORD
 ```
 
 ## Make interface come up on boot
-The builtin WiFi iface could be wlan0 / wlp2s0 or similar
+Check with ip link for the name of your WiFI.
+Could be wlan0 / wlp2s0 or similar.
 ```
 auto wlan0
 iface wlan0 inet dhcp
     wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 ```
+
+Only your WiFI should have default route.
+Remove default gateway and brdiging from vmbr0
+```
+auto vmbr0
+iface vmbr0 inet static
+    address 10.10.10.1/24
+    bridge_ports none
+    bridge_stp off
+    bridge_fd 0
+```
+
+
 {: file="/etc/network/interfaces" }
 
 ## Make VMs able to use the internet
 
 IP Forwarding
 ```
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf.d/99-ip_forwarding.conf
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
 sysctl --system
 ```
 
-NAT Rule
+Iptables NAT and Forwarding Rules
 ```
 iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+iptables -A FORWARD -i vmbr0 -o wlan0 -j ACCEPT
+iptables -A FORWARD -i wlan0 -o vmbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 ```
 
