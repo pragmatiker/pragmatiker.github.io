@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to Write a Jekyll Post"
-date: 2025-07-25 10:00:00 -0000
+date: 2025-07-25 10:00:00 +0200
 author: "TimDude"
 categories: blog
 tags: blog jekyll
@@ -22,9 +22,11 @@ This sets the **post's date** and **URL slug** automatically.
 Each post needs this at the top:
 
 ~~~
+Be aware to use your time Zone or else your post might seems like its in the future and not get
+published right away.
 ---
 title: "Your Post Title"
-date: YYYY-MM-DD
+date: YYYY-MM-DD 10:00:00 +0200
 layout: post
 description: "Optional. Useful for SEO and feeds."
 tags: [optional, list, of, tags]
