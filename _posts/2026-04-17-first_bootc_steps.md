@@ -270,6 +270,18 @@ podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
 ### Apply the update on the VM
 
 Check for a new image:
-```bash
+```
 sudo bootc upgrade
 ```
+
+Apply it
+```
+sudo bootc upgrade --apply
+```
+
+reboot
+```
+sudo reboot
+```
+
+
