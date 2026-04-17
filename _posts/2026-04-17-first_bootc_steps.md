@@ -199,5 +199,13 @@ qm set 9000 --boot order=scsi0
 qm set 9000 --serial0 socket --vga serial0
 ```
 
+### Networking
+Just in case you have no dhcp
+```
+sudo nmcli connection add type ethernet ifname ens18 con-name ens18 \
+  ip4 192.168.100.20/24 gw4 192.168.100.1
 
+sudo nmcli connection modify ens18 ipv4.dns "1.1.1.1"
+sudo nmcli connection up ens18
+```
 
