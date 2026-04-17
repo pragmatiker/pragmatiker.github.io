@@ -67,7 +67,42 @@ curl http://localhost:5000/v2/_catalog
 ```
 
 
- 
+ ## 5. Prepare build workspace
+ ```
+mkdir -p ~/bootc-build/output
+cd ~/bootc-build
+```
+
+## 6. (Optional but recommended) Add user config
+```
+[customizations.user]
+name = "therty"
+password = "$6$QuzSFM....3zohPb0MypZ/"
+groups = ["wheel"]
+
+[customizations.sshkey]
+user = "therty"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5Lfs2NpChZkyaVfG+ZZLcf+f7Lk6eqHy4ll1xnhhJGbR"
+```
+{: file="./config.toml" }
+
+Generate password hash (example):
+```
+openssl passwd -6
+```
+
+## 7. Build qcow2 image
+```
+podman run --rm -it \
+  --privileged \
+  -v ./output:/output \
+  -v ./config.toml:/config.toml:ro \
+  quay.io/centos-bootc/bootc-image-builder:latest \
+  --type qcow2 \
+  --config /config.toml \
+  localhost:5000/fedora-bootc:40
+```
+
 
 
 
