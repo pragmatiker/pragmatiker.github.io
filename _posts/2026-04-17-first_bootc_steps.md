@@ -210,7 +210,20 @@ sudo nmcli connection modify ens18 ipv4.dns "1.1.1.1"
 sudo nmcli connection up ens18
 ```
 
+<<<<<<< HEAD
+=======
 ## Updating the System with bootc
+Now the fun part: the host OS is updated from a new container image.
+>>>>>>> 78a9d367212f3f77bca8596fb736c507c5b0c73a
+
+<<<<<<< HEAD
+## Updating the system with bootc
+=======
+You generally do not mutate the host with ad-hoc package installs.
+Instead, you change the Containerfile, build a new image, push it to the registry,
+and then let the machine apply that image with `bootc upgrade`.
+>>>>>>> 78a9d367212f3f77bca8596fb736c507c5b0c73a
+
 Now the fun part: the host OS is updated from a new container image.
 
 You generally do not mutate the host with ad-hoc package installs.
@@ -265,6 +278,7 @@ Push to local registry
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
 ```
+<<<<<<< HEAD
 
 ### Apply the update on the VM
 
@@ -272,3 +286,13 @@ Check for a new image:
 ```bash
 sudo bootc upgrade
 ```
+=======
+
+### Apply the update on the VM
+
+Check for a new image:
+```bash
+sudo bootc upgrade
+```
+
+>>>>>>> 78a9d367212f3f77bca8596fb736c507c5b0c73a
