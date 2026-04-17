@@ -211,10 +211,11 @@ sudo nmcli connection up ens18
 ```
 
 ## Updating the System with bootc
-Now the fun part.
-No more package manager.
+Now the fun part: the host OS is updated from a new container image.
 
-Lets build a new Version of the container and update the machine
+You generally do not mutate the host with ad-hoc package installs.
+Instead, you change the Containerfile, build a new image, push it to the registry,
+and then let the machine apply that image with `bootc upgrade`.
 
 ### Build new Container v2
 Create a Containerfile
@@ -263,4 +264,11 @@ Push to local registry
 ```
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
+```
+
+### Apply the update on the VM
+
+Check for a new image:
+```bash
+sudo bootc upgrade
 ```
