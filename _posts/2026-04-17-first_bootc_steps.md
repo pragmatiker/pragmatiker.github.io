@@ -17,7 +17,7 @@ So lets experient with bootable containers.
 
 
 
-## 1. Base system prep
+## Base system prep
 
 ```
 sudo apt update
@@ -25,7 +25,7 @@ sudo apt install -y podman skopeo curl
 ```
 
 
-## 2. Start local registry
+## Start local registry
 Run reg as a container
 ```
 podman run -d \
@@ -40,7 +40,7 @@ verify
 curl http://localhost:5000/v2/_catalog
 ```
 
-## 3. Allow insecure local registry (important)
+## Allow insecure local registry (important)
 ```
 sudo nano /etc/containers/registries.conf.d/local.conf
 ```
@@ -52,7 +52,7 @@ insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
 
-## 4. Mirror Fedora bootc base image
+## Mirror Fedora bootc base image
 
 Example:
 ```
@@ -66,14 +66,51 @@ Verify:
 curl http://localhost:5000/v2/_catalog
 ```
 
+## Build your own bootc image (important)
 
- ## 5. Prepare build workspace
+Using the Fedora base directly works, but it won’t auto-update because the tag is static.
+So we create our own image that we control.
+
+Create a Containerfile
+```
+FROM localhost:5000/fedora-bootc:40
+
+# Make system quieter on serial console
+RUN mkdir -p /usr/lib/bootc/kargs.d && \
+    echo "quiet loglevel=3" > /usr/lib/bootc/kargs.d/quiet.conf
+
+# Add some basic tools
+RUN dnf install -y vim htop tmux && dnf clean all
+```
+{: file="./Containerfile" }
+
+
+Build and tag image
+```
+podman build -t localhost:5000/my-bootc:1 .
+podman tag localhost:5000/my-bootc:1 localhost:5000/my-bootc:latest
+```
+
+Push to local registry
+```
+podman push --tls-verify=false localhost:5000/my-bootc:1
+podman push --tls-verify=false localhost:5000/my-bootc:latest
+```
+
+Verify
+```
+curl http://localhost:5000/v2/_catalog
+curl http://localhost:5000/v2/my-bootc/tags/list
+```
+
+
+ ## Prepare build workspace
  ```
 mkdir -p ~/bootc-build/output
 cd ~/bootc-build
 ```
 
-## 6. (Optional but recommended) Add user config
+## (Optional but recommended) Add user config
 ```
 [[customizations.user]]
 name = "therty"
@@ -91,9 +128,9 @@ Generate password hash (example):
 openssl passwd -6
 ```
 
-## 7. Build qcow2 image
+## Build qcow2 image
 ```
-sudo podman pull localhost:5000/fedora-bootc:40
+sudo podman pull localhost:5000/my-bootc:latest
 
 sudo podman run --rm -it \
   --privileged \
@@ -106,7 +143,7 @@ sudo podman run --rm -it \
   --type qcow2 \
   --rootfs btrfs \
   --config /config.toml \
-  localhost:5000/fedora-bootc:40
+  localhost:5000/my-bootc:latest
 ```
 
 Output:
@@ -114,11 +151,20 @@ Output:
 ./output/qcow2/disk.qcow2
 ```
 
-## 8. Copy to proxmox
+## Copy to proxmox
 ```
 scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
 ```
+## Create VM from Image
+On the Proxmox Host import the image and create Vm from it.
 
+```
+qm create 9000 --name fedora-bootc --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+qm importdisk 9000 disk.qcow2 local-lvm
+qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
+qm set 9000 --boot order=scsi0
+qm set 9000 --serial0 socket --vga serial0
+```
 
 
 
