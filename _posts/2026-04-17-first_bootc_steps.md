@@ -8,13 +8,12 @@ tags: ["proxmox", "bootc", "podman"]
 ---
 
 So lets experient with bootable containers.
+
+At a high level: we are not installing a system — we are building an image and booting it.
 # Goals:
 * Boot a bootc Linux in proxmox
 * Edit the container
-* bootc Updgrade
-
-
-
+* bootc updgrade
 
 
 ## Base system prep
@@ -74,8 +73,8 @@ cd ~/bootc-build
 
 ## Build your own bootc image (important)
 
-Using the Fedora base directly works, but it won’t auto-update because the tag is static.
-So we create our own image that we control.
+Using the Fedora base directly works, but it won’t auto-update in our setup,
+because we mirror it into a local registry and the tag stays unchanged.
 
 Create a Containerfile
 ```
@@ -86,12 +85,17 @@ RUN mkdir -p /usr/lib/bootc/kargs.d && \
     echo "quiet loglevel=3" > /usr/lib/bootc/kargs.d/quiet.conf
 
 # Add some basic tools
-RUN dnf install -y vim htop tmux && dnf clean all
+RUN dnf install -y vim htop tmux && \
+    dnf clean all
 ```
 {: file="./Containerfile" }
 
 
 Build and tag image
+
+We use two tags:
+- a fixed version (`:1`) for reproducibility
+- a moving tag (`:latest`) for automatic upgrades
 ```
 podman build -t localhost:5000/my-bootc:1 .
 podman tag localhost:5000/my-bootc:1 localhost:5000/my-bootc:latest
