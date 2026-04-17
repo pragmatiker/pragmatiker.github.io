@@ -93,7 +93,28 @@ iptables -A FORWARD -i wlan0 -o vmbr0 -m state --state RELATED,ESTABLISHED -j AC
 iptables-save > /etc/iptables/rules.v4
 ```
 
+## Access VMs via SSH (Port Forwarding)
+To access them (e.g. via SSH), you can forward ports on the Proxmox host.
 
+Example
+```
+Proxmox (WiFi): 192.168.0.105
+VM: 192.168.100.10
+Goal: 192.168.0.105:1022 → 192.168.100.10:22
+```
+
+NAT and forwarind rules
+```
+iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 1022 -j DNAT --to-destination 192.168.100.10:22
+iptables -A FORWARD -p tcp -d 192.168.100.10 --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+iptables-save > /etc/iptables/rules.v4
+```
+
+Try to connect
+```
+ssh -p 1022 user@192.168.0.105
+```
+ 
 
 
 
