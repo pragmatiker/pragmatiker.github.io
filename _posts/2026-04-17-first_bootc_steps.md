@@ -10,10 +10,10 @@ tags: ["proxmox", "bootc", "podman"]
 So lets experiment with bootable containers.
 
 At a high level: we are not installing a system — we are building an image and booting it.
-## Goals:
-* Boot a bootc Linux in proxmox
-* Edit the container
-* bootc updgrade
+## Goals
+- Boot a bootc-based Fedora system in Proxmox
+- Customize the OS by building a derived container image
+- Upgrade the machine by publishing a new image and applying it with bootc
 
 
 ## Registry
@@ -261,6 +261,6 @@ podman tag 192.168.100.10:5000/my-bootc:2 192.168.100.10:5000/my-bootc:latest
 
 Push to local registry
 ```
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:1
+podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
 ```
