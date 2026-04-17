@@ -7,7 +7,7 @@ categories: ["Tech", "containers"]
 tags: ["proxmox", "bootc", "podman"]
 ---
 
-So lets experient with bootable containers.
+So lets experiment with bootable containers.
 
 At a high level: we are not installing a system — we are building an image and booting it.
 ## Goals:
