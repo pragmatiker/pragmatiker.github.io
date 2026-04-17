@@ -20,6 +20,33 @@ The first ist pretty simple an straight forward, so i will look at the second op
 I tethered my Android phone temporarily to install packages from the internet, so it will also be described in the process.
 
 ProxMox setup wont configure WiFi you will have to do that your self and need to install some packages in the process.
-To access packages you will need an internet connection. Either you can temporaily connect with ethernt to a router or use USB tethering.
+To access packages you will need an internet connection. Either you can temporaily connect with ethernet to a router or use USB tethering.
+
+Either of them can be activated by the installer. But also manually.
+
+```
+ip link set enx00e04c010203 up
+dhclient enx00e04c010203
+```
+
+Get packages
+```
+apt get wpasupplicant iptable-persistent
+```
+
+Configure wpa-suplicant
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant
+update_config=1
+
+network={
+    ssid="Ihr_WLAN_Name"
+    psk="Ihr_Passwort"
+}
+```
+{: file="/etc/wpa_supplicant/wpa_supplicant.conf" }
+
+
+
 
 
