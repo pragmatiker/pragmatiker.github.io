@@ -1,1 +1,25 @@
-s
+---
+layout: post
+title: "Using ProxMox with WiFi"
+date: 2026-04-17 10:00:00 -0000
+author: "TimDude"
+categories: ["Tech", "Hypervisors"]
+tags: ["proxmox", "linux", "networking"]
+---
+
+If youre on the go with your LTE HotSpot, cant run cable in your home or have any other reason to use WiFi with ProxMox, I'll shed some light on your options.
+
+Depending with which option you go, you will have working bridging or will have to use NAT or routing to connect to VMs.
+
+## Options
+* The simplest, a WiFi bridge like TPLINK WR802N you can plug into your ProxMox ethernet Port (bridging can work)
+* Install wpasupplicant and user the WiFI on your ProxMox box (bridging wont work)
+* Use USB Tethering of you LTE HotSpot or Android Phone (bridging wont work)
+
+The first ist pretty simple an straight forward, so i will look at the second option of using onbard WiFi.
+I tethered my Android phone temporarily to install packages from the internet, so it will also be described in the process.
+
+ProxMox setup wont configure WiFi you will have to do that your self and need to install some packages in the process.
+To access packages you will need an internet connection. Either you can temporaily connect with ethernt to a router or use USB tethering.
+
+
