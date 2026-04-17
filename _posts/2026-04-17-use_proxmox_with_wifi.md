@@ -7,17 +7,17 @@ categories: ["Tech"]
 tags: ["proxmox", "linux", "networking"]
 ---
 
-If youre on the go with your LTE HotSpot, cant run cable in your home or have any other reason to use WiFi with ProxMox.
+If you're on the go with your LTE HotSpot, can't run cable in your home or have any other reason to use WiFi with ProxMox.
 I'll shed some light on your options.
 
 WiFi interfaces cannot be bridged like Ethernet in most setups, so when using onboard WiFi you must use routing/NAT instead of bridging.
 
 # Options
 * The simplest, a WiFi bridge like TPLINK WR802N you can plug into your ProxMox ethernet Port (bridging can work)
-* Install wpasupplicant and user the WiFI on your ProxMox box (bridging wont work)
+* Install wpasupplicant and use the WiFI on your ProxMox box (bridging wont work)
 * Use USB Tethering of you LTE HotSpot or Android Phone (bridging wont work)
 
-The first is pretty simple an straight forward, so i will look at the second option of using onbard WiFi.
+The first is pretty simple an straight forward, so i will look at the second option of using onboard WiFi.
 
 ProxMox setup wont configure WiFi you will have to do that your self and need to install some packages in the process.
 To access packages you will need an internet connection. 
@@ -54,12 +54,12 @@ Optional generate hashed psk
 wpa_passphrase YOUR_WIFI_NAME YOUR_PASSWORD
 ```
 
-## Make interface come up on boot
-Check with ip link for the name of your WiFI.
-Could be wlan0 / wlp2s0 or similar.
+## Make the interface come up on boot
+Check with ip link for the name of your WiFi interface.
+It could be wlan0, wlp2s0, or something similar.
 ```
-auto wlan0
-iface wlan0 inet dhcp
+auto wlp2s0
+iface wlp2s0 inet dhcp
     wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 ```
 
@@ -87,26 +87,38 @@ sysctl --system
 
 Iptables NAT and Forwarding Rules
 ```
-iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
-iptables -A FORWARD -i vmbr0 -o wlan0 -j ACCEPT
-iptables -A FORWARD -i wlan0 -o vmbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+export wifi="wlp2s0"
+
+iptables -t nat -A POSTROUTING -o ${wifi} -j MASQUERADE
+iptables -A FORWARD -i vmbr0 -o ${wifi} -j ACCEPT
+iptables -A FORWARD -i ${wifi} -o vmbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
 iptables-save > /etc/iptables/rules.v4
 ```
 
-## Access VMs via SSH (Port Forwarding)
-To access them (e.g. via SSH), you can forward ports on the Proxmox host.
+## Access VMs via (Port Forwarding)
+To access them (e.g. via SSH / HTTPS), you can forward ports on the Proxmox host.
 
 Example
 ```
 Proxmox (WiFi): 192.168.0.105
 VM: 192.168.100.10
-Goal: 192.168.0.105:1022 → 192.168.100.10:22
+Goal SSH: 192.168.0.105:1022 → 192.168.100.10:22
+Goal HTTPS: 192.168.0.105:10443 → 192.168.100.10:443
 ```
 
-NAT and forwarind rules
+NAT and forwarding rules
 ```
-iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 1022 -j DNAT --to-destination 192.168.100.10:22
-iptables -A FORWARD -p tcp -d 192.168.100.10 --dport 22 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+export wifi="wlp2s0"
+
+iptables -t nat -A PREROUTING -i ${wifi} -p tcp --dport 1022 -j DNAT --to-destination 192.168.100.10:22
+iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 22 -j ACCEPT
+iptables -A FORWARD -i vmbr0 -o ${wifi} -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+iptables -t nat -A PREROUTING -i ${wifi} -p tcp --dport 10443 -j DNAT --to-destination 192.168.100.10:443
+iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 443 -j ACCEPT
+iptables -A FORWARD -i vmbr0 -o ${wifi} -m state --state ESTABLISHED,RELATED -j ACCEPT
+
 iptables-save > /etc/iptables/rules.v4
 ```
 
