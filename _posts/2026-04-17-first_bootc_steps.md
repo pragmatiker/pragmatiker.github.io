@@ -26,6 +26,7 @@ sudo apt install -y podman skopeo curl
 
 
 ## 2. Start local registry
+Run reg as a container
 ```
 podman run -d \
   -p 5000:5000 \
@@ -34,19 +35,22 @@ podman run -d \
   registry:2
 ```
 
+verify
+```
+curl http://localhost:5000/v2/_catalog
+```
 
+## 3. Allow insecure local registry (important)
+```
+sudo nano /etc/containers/registries.conf.d/local.conf
+```
 
 ```
-ctrl_interface=/run/wpa_supplicant
-update_config=1
-country=DE
-
-network={
-    ssid="YOUR_WIFI_NAME"
-    psk="YOUR_PASSWORD"
-}
+[[registry]]
+location = "localhost:5000"
+insecure = true
 ```
-{: file="/etc/wpa_supplicant/wpa_supplicant.conf" }
+{: file="/etc/containers/registries.conf.d/local.conf" }
 
 
  
