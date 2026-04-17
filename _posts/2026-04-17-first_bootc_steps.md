@@ -17,7 +17,25 @@ So lets experient with bootable containers.
 
 
 
-## Configure reg
+## 1. Base system prep
+
+```
+sudo apt update
+sudo apt install -y podman skopeo curl
+```
+
+
+## 2. Start local registry
+```
+podman run -d \
+  -p 5000:5000 \
+  --name registry \
+  --restart=always \
+  registry:2
+```
+
+
+
 ```
 ctrl_interface=/run/wpa_supplicant
 update_config=1
