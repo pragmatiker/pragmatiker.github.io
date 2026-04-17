@@ -66,7 +66,7 @@ curl http://localhost:5000/v2/_catalog
 ```
 
  ## Prepare build workspace
- ```
+```
 mkdir -p ~/bootc-build/output
 cd ~/bootc-build
 ```
