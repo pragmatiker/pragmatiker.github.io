@@ -75,12 +75,12 @@ cd ~/bootc-build
 
 ## 6. (Optional but recommended) Add user config
 ```
-[customizations.user]
+[[customizations.user]]
 name = "therty"
 password = "$6$QuzSFM....3zohPb0MypZ/"
 groups = ["wheel"]
 
-[customizations.sshkey]
+[[customizations.sshkey]]
 user = "therty"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5Lfs2NpChZkyaVfG+ZZLcf+f7Lk6eqHy4ll1xnhhJGbR"
 ```
@@ -93,14 +93,25 @@ openssl passwd -6
 
 ## 7. Build qcow2 image
 ```
-podman run --rm -it \
+sudo podman pull localhost:5000/fedora-bootc:40
+
+sudo podman run --rm -it \
   --privileged \
-  -v ./output:/output \
-  -v ./config.toml:/config.toml:ro \
+  --pull=newer \
+  --security-opt label=type:unconfined_t \
+  -v "$PWD/output:/output" \
+  -v "$PWD/config.toml:/config.toml:ro" \
+  -v /var/lib/containers/storage:/var/lib/containers/storage \
   quay.io/centos-bootc/bootc-image-builder:latest \
   --type qcow2 \
+  --rootfs btrfs \
   --config /config.toml \
   localhost:5000/fedora-bootc:40
+```
+
+Output:
+```
+./output/qcow2/disk.qcow2
 ```
 
 
