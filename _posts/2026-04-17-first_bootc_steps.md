@@ -96,6 +96,7 @@ Build and tag image
 We use two tags:
 - a fixed version (`:1`) for reproducibility
 - a moving tag (`:latest`) for automatic upgrades
+
 ```
 podman build -t localhost:5000/my-bootc:1 .
 podman tag localhost:5000/my-bootc:1 localhost:5000/my-bootc:latest
