@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Using ProxMox with WiFi"
-date: 2026-04-16 09:00:00 -0000
+date: 2026-04-17 09:00:00 -0000
 author: "TimDude"
 categories: ["Tech"]
 tags: ["proxmox", "linux", "networking"]
