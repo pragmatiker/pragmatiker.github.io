@@ -11,7 +11,7 @@ If youre on the go with your LTE HotSpot, cant run cable in your home or have an
 
 Depending with which option you go, you will have working bridging or will have to use NAT or routing to connect to VMs.
 
-## Options
+# Options
 * The simplest, a WiFi bridge like TPLINK WR802N you can plug into your ProxMox ethernet Port (bridging can work)
 * Install wpasupplicant and user the WiFI on your ProxMox box (bridging wont work)
 * Use USB Tethering of you LTE HotSpot or Android Phone (bridging wont work)
