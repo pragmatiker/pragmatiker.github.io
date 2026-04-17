@@ -278,7 +278,6 @@ Push to local registry
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
 podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
 ```
-<<<<<<< HEAD
 
 ### Apply the update on the VM
 
@@ -286,13 +285,3 @@ Check for a new image:
 ```bash
 sudo bootc upgrade
 ```
-=======
-
-### Apply the update on the VM
-
-Check for a new image:
-```bash
-sudo bootc upgrade
-```
-
->>>>>>> 78a9d367212f3f77bca8596fb736c507c5b0c73a
