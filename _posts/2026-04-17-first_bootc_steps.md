@@ -52,6 +52,16 @@ insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
 
+## 4. Mirror Fedora bootc base image
+
+Example:
+```
+skopeo copy \
+  docker://quay.io/fedora/fedora-bootc:40 \
+  docker://localhost:5000/fedora-bootc:40 \
+  --dest-tls-verify=false
+```
+
 
  
 
