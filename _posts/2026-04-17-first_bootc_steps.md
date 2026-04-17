@@ -254,7 +254,7 @@ RUN dnf clean all
 {: file="./Containerfile" }
 
 Build and tag image
-Like before 2 Tags (current Version an latest)
+Like before, we use 2 tags: one fixed version and `latest`.
 
 ```
 podman build -t 192.168.100.10:5000/my-bootc:2 .
