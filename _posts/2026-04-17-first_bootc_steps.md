@@ -85,6 +85,7 @@ Create a Containerfile
 FROM 192.168.100.10:5000/fedora-bootc:40
 
 ### Version 1 ####
+# Connect to unsafe regs
 RUN mkdir -p /etc/containers/registries.conf.d
 RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
 [[registry]]
@@ -221,6 +222,7 @@ Create a Containerfile
 FROM 192.168.100.10:5000/fedora-bootc:40
 
 ### Version 1 ####
+# Connect to unsafe regs
 RUN mkdir -p /etc/containers/registries.conf.d
 RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
 [[registry]]
