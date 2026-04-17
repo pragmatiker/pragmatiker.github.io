@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Kungsleden 2025 - Packliste"
-date: 2025-07-25 10:00:00 -0000
+date: 2025-07-25
 author: "TimDude"
 categories: ["Wandern", "Kungsleden 2025"]
 tags: kungsleden packliste 

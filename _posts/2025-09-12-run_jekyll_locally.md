@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Running Jekyll locally"
-date: 2025-09-12 07:00:00 -0000
+date: 2025-09-12
 author: "TimDude"
 categories: ["Tech",  "Jekyll"]
 tags: ["proxmox", "linux", "routing"]
