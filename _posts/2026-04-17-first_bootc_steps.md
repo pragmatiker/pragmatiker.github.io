@@ -24,7 +24,6 @@ sudo apt update
 sudo apt install -y podman skopeo curl
 ```
 
-
 ### Start local registry
 Run reg as a container
 ```
