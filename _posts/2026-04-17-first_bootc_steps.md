@@ -40,6 +40,9 @@ podman create \
 ```
 
 ### Create systemd service
+Remember it is run from systemd as root.
+So normal user "podman ps" wont show it
+
 ```
 podman generate systemd --name registry --files --new
 
