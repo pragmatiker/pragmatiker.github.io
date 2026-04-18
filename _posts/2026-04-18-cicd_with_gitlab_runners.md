@@ -117,9 +117,9 @@ my-bootc:latest
 2. Push to GitLab
 3. Pipeline triggers
 4. Runner executes:
-5. podman build
-6. podman tag
-7. podman push
+  * podman build
+  * podman tag
+  * podman push
 8. Image available in registry
 
 
