@@ -103,6 +103,8 @@ Containerfile
 .gitlab-ci.yml
 
 ### GitLab CI Pipeline
+
+My registry is running at: http://192.168.100.10:5000
 ```
 stages:
   - build
@@ -114,7 +116,7 @@ build_container:
   variables:
     IMAGE: "192.168.100.10:5000/my-bootc"
   script:
-    - BUILD_TAG="$CI_PIPELINE_IID"
+    - BUILD_TAG="$CI_COMMIT_SHORT_SHA"
 
     - echo "Building $IMAGE:$BUILD_TAG"
     - podman build -t "$IMAGE:$BUILD_TAG" .
