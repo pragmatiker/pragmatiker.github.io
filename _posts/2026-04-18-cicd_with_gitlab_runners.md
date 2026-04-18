@@ -37,3 +37,15 @@ Local registry (192.168.100.10:5000)
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash sudo apt install -y gitlab-runner podman
 ```
 
+
+### Register
+```
+sudo gitlab-runner register
+```
+
+Settings:
+
+URL: http://192.168.100.10 # Gitlab URL
+Executor: shell
+Tags: podman
+Description: build-host
