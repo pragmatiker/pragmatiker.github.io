@@ -43,6 +43,13 @@ install
 sudo apt install -y gitlab-runner podman
 ```
 
+### add subid
+
+```
+sudo echo 'gitlab-runner:100000:65536' >> /etc/subuid
+sudo echo 'gitlab-runner:100000:65536' >> /etc/subgid
+```
+
 ### Create Accesstoken in gitlab
 
 Go to:
