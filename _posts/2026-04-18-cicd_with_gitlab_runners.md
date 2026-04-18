@@ -21,10 +21,10 @@ Containerfile change
 
 ## Architecture
 ```
-GitLab (server)
+GitLab (server 192.168.100.11)
     ↓
-GitLab Runner (build host, shell executor)
-    ↓
+GitLab Runner (build host with shell executor 192.168.100.10:5000)
+    ↓ 
 Podman (build + push)
     ↓
 Local registry (192.168.100.10:5000)
