@@ -50,10 +50,12 @@ sudo gitlab-runner register
 
 Settings:
 
+```
 URL: http://192.168.100.10 # Gitlab URL
 Executor: shell
 Tags: podman
 Description: build-host
+```
 
 ## Podman Registry Config (on runner)
 
