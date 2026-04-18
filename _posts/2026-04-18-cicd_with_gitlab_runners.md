@@ -79,7 +79,7 @@ Tags: podman
 Description: build-host
 ```
 
-## Podman Registry Config (on runner)
+### Podman Registry Config (on runner)
 
 File:
 ```
@@ -88,6 +88,12 @@ location = "192.168.100.10:5000"
 insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
+
+### Test
+```
+sudo -iu gitlab-runner
+podman pull --tls-verify=false 192.168.100.10:5000/fedora-bootc:40
+```
 
 
 ## Gitlab Project
