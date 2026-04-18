@@ -73,7 +73,7 @@ sudo gitlab-runner register --token XXXXX
 Settings:
 
 ```
-URL: http://192.168.100.10 # Gitlab URL
+URL: http://192.168.100.11 # Gitlab URL
 Executor: shell
 Tags: podman
 Description: build-host
