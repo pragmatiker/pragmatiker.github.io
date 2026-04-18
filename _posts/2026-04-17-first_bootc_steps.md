@@ -24,14 +24,29 @@ sudo apt update
 sudo apt install -y podman skopeo curl
 ```
 
+### Make data dir
+```
+sudo mkdir -p /srv/registry
+```
+
 ### Start local registry
 Run reg as a container
 ```
-podman run -d \
-  -p 5000:5000 \
+podman create \
   --name registry \
-  --restart=always \
+  -p 5000:5000 \
+  -v /srv/registry:/var/lib/registry \
   registry:2
+```
+
+### Create systemd service
+```
+podman generate systemd --name registry --files --new
+
+sudo mv container-registry.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now container-registry.service
+sudo podman ps
 ```
 
 verify
