@@ -72,3 +72,8 @@ alertmanager['enable'] = false
 ```
 {: file="/etc/gitlab/gitlab.rb" }
 
+Then:
+```
+sudo gitlab-ctl reconfigure
+```
+
