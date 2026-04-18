@@ -1,28 +1,42 @@
 ---
 layout: post
-title: "First steps with bootc"
+title: "Set up Gitlab"
 date: 2026-04-17
 author: "TimDude"
 categories: ["Tech", "devops"]
-tags: ["proxmox", "bootc", "podman", "containers"]
+tags: ["gitlab", "ci-cd"]
 ---
 
-So lets experiment with bootable containers.
+So lets set up gitlab
 
-At a high level: we are not installing a system — we are building an image and booting it.
+
 ## Goals
-- Boot a bootc-based Fedora system in Proxmox
-- Customize the OS by building a derived container image
-- Upgrade the machine by publishing a new image and applying it with bootc
+- Installed gitlab on debian
+- WebUI up and running
 
 
-## Registry
-### Base system prep
+
+## VM
+### VM sizing
+
+For your Proxmox:
+
+CPU: 2 vCPU (4 if you can spare it)
+RAM: 6–8 GB
+Disk: 40–60 GB
+OS: Debian 12 minimal
+
+## Gitlab install
+
+### Install dependencies
 
 ```
 sudo apt update
-sudo apt install -y podman skopeo curl
+sudo apt install -y curl ca-certificates openssh-server tzdata perl
 ```
+
+
+
 
 ### Start local registry
 Run reg as a container
