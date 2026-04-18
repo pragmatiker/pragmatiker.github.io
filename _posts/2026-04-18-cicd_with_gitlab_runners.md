@@ -20,7 +20,7 @@ Containerfile change
 → Image pushed to local registry
 
 ## Architecture
-
+```
 GitLab (server)
     ↓
 GitLab Runner (build host, shell executor)
@@ -28,6 +28,7 @@ GitLab Runner (build host, shell executor)
 Podman (build + push)
     ↓
 Local registry (192.168.100.10:5000)
+```
 
 
 ## Runner Setup
