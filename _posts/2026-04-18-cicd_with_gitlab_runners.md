@@ -37,7 +37,6 @@ Local registry (192.168.100.10:5000)
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash sudo apt install -y gitlab-runner podman
 ```
 
-
 ### Register
 ```
 sudo gitlab-runner register
@@ -49,3 +48,72 @@ URL: http://192.168.100.10 # Gitlab URL
 Executor: shell
 Tags: podman
 Description: build-host
+
+## Podman Registry Config (on runner)
+
+File:
+```
+[[registry]]
+location = "192.168.100.10:5000"
+insecure = true
+```
+{: file="/etc/containers/registries.conf.d/local.conf" }
+
+
+## Gitlab Project
+
+### Project Structure
+Containerfile
+.gitlab-ci.yml
+
+### GitLab CI Pipeline
+```
+stages:
+  - build
+
+build_container:
+  stage: build
+  tags:
+    - podman
+  variables:
+    IMAGE: "192.168.100.10:5000/my-bootc"
+  script:
+    - BUILD_TAG="$CI_PIPELINE_IID"
+
+    - echo "Building $IMAGE:$BUILD_TAG"
+    - podman build -t "$IMAGE:$BUILD_TAG" .
+
+    - echo "Tagging latest"
+    - podman tag "$IMAGE:$BUILD_TAG" "$IMAGE:latest"
+
+    - echo "Pushing numbered tag"
+    - podman push --tls-verify=false "$IMAGE:$BUILD_TAG"
+
+    - echo "Pushing latest tag"
+    - podman push --tls-verify=false "$IMAGE:latest"
+  rules:
+    - changes:
+        - Containerfile
+```
+{: file=".gitlab-ci.yaml" }
+
+### Tagging Strategy
+Incrementing: $CI_PIPELINE_IID
+Rolling: latest
+
+Example:
+
+my-bootc:12
+my-bootc:latest
+
+### Execution Flow
+1. Commit changes to Containerfile
+2. Push to GitLab
+3. Pipeline triggers
+4. Runner executes:
+5. podman build
+6. podman tag
+7. podman push
+8. Image available in registry
+
+
