@@ -43,9 +43,24 @@ install
 sudo apt install -y gitlab-runner podman
 ```
 
+### Create Accesstoken in gitlab
+
+Go to:
+
+Project → Settings → CI/CD → Runners
+
+Click:
+
+New project runner
+
+Copy:
+
+--token XXXXX
+
+
 ### Register
 ```
-sudo gitlab-runner register
+sudo gitlab-runner register --token XXXXX
 ```
 
 Settings:
