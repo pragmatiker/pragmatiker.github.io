@@ -14,8 +14,6 @@ So lets set up gitlab
 - Installed gitlab on debian
 - WebUI up and running
 
-
-
 ## VM
 ### VM sizing
 
@@ -34,32 +32,18 @@ OS: Debian 12 minimal
 sudo apt update
 sudo apt install -y curl ca-certificates openssh-server tzdata perl
 ```
-
-
-
-
-### Start local registry
-Run reg as a container
+### Add GitLab repository
 ```
-podman run -d \
-  -p 5000:5000 \
-  --name registry \
-  --restart=always \
-  registry:2
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 ```
 
-verify
+### Install GitLab
+
+Set your URL first (important):
 ```
-curl http://192.168.100.10:5000/v2/_catalog
+sudo EXTERNAL_URL="http://192.168.100.11" apt install gitlab-ce
 ```
 
-## Build container
-
-### Allow insecure local registry (important)
-
-```
-sudo nano /etc/containers/registries.conf.d/local.conf
-```
 
 ```
 [[registry]]
@@ -67,238 +51,4 @@ location = "192.168.100.10:5000"
 insecure = true
 ```
 {: file="/etc/containers/registries.conf.d/local.conf" }
-
-### Mirror Fedora bootc base image
-
-Example:
-```
-skopeo copy \
-  docker://quay.io/fedora/fedora-bootc:40 \
-  docker://192.168.100.10:5000/fedora-bootc:40 \
-  --dest-tls-verify=false
-```
-Verify:
-```
-curl http://192.168.100.10:5000/v2/_catalog
-```
-
-### Prepare build workspace
-
-```
-mkdir -p ~/bootc-build/output
-cd ~/bootc-build
-```
-
-### Build your own bootc image (important)
-
-Using the Fedora base directly works, but it won’t auto-update in our setup,
-because we mirror it into a local registry and the tag stays unchanged.
-
-Create a Containerfile
-```
-FROM 192.168.100.10:5000/fedora-bootc:40
-
-### Version 1 ####
-# Connect to unsafe regs
-RUN mkdir -p /etc/containers/registries.conf.d
-RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
-[[registry]]
-location = "192.168.100.10:5000"
-insecure = true
-EOF
-
-# Correct bootc kargs.d format: TOML
-RUN mkdir -p /usr/lib/bootc/kargs.d
-RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-kargs = ["quiet", "loglevel=3"]
-EOF
-
-# Lower runtime console verbosity too
-RUN mkdir -p /usr/lib/sysctl.d
-RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-kernel.printk = 3 4 1 3
-EOF
-### Version 1 END ###
-```
-{: file="./Containerfile" }
-
-
-Build and tag image
-
-We use two tags:
-- a fixed version (`:1`) for reproducibility
-- a moving tag (`:latest`) for automatic upgrades
-
-```
-podman build -t 192.168.100.10:5000/my-bootc:1 .
-podman tag 192.168.100.10:5000/my-bootc:1 192.168.100.10:5000/my-bootc:latest
-```
-
-Push to local registry
-```
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:1
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
-```
-
-Verify
-```
-curl http://192.168.100.10:5000/v2/_catalog
-curl http://192.168.100.10:5000/v2/my-bootc/tags/list
-```
-
-## Build DiskImage for Proxmox
-
-
-### Switch to build dir
-```
-cd ~/bootc-build
-```
-
-### (Optional but recommended) Add user config
-```
-[[customizations.user]]
-name = "therty"
-password = "$6$QuzSFM....3zohPb0MypZ/"
-groups = ["wheel"]
-
-[[customizations.sshkey]]
-user = "therty"
-key = "ssh-ed25519 AAAAC3NzaC....k6eqHy4ll1xnhhJGbR"
-```
-{: file="./config.toml" }
-
-Generate password hash (example):
-```
-openssl passwd -6
-```
-
-### Build qcow2 image
-```
-sudo podman pull 192.168.100.10:5000/my-bootc:latest
-
-sudo podman run --rm -it \
-  --privileged \
-  --pull=newer \
-  --security-opt label=type:unconfined_t \
-  -v "$PWD/output:/output" \
-  -v "$PWD/config.toml:/config.toml:ro" \
-  -v /var/lib/containers/storage:/var/lib/containers/storage \
-  quay.io/centos-bootc/bootc-image-builder:latest \
-  --type qcow2 \
-  --rootfs btrfs \
-  --config /config.toml \
-  192.168.100.10:5000/my-bootc:latest
-```
-
-Output:
-```
-./output/qcow2/disk.qcow2
-```
-
-
-## Create VM from Disk Image
-
-### Copy to proxmox
-```
-scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
-```
-
-### Create VM from Image
-
-On the Proxmox host, import the image and create a VM from it.
-
-```
-qm create 9000 --name fedora-bootc --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
-qm importdisk 9000 disk.qcow2 local-lvm
-qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
-qm set 9000 --boot order=scsi0
-qm set 9000 --serial0 socket --vga serial0
-```
-
-### Networking
-Just in case you have no dhcp
-```
-sudo nmcli connection add type ethernet ifname ens18 con-name ens18 \
-  ip4 192.168.100.20/24 gw4 192.168.100.1
-
-sudo nmcli connection modify ens18 ipv4.dns "1.1.1.1"
-sudo nmcli connection up ens18
-```
-
-## Updating the system with bootc
-Now the fun part: the host OS is updated from a new container image.
-
-You generally do not mutate the host with ad-hoc package installs.
-Instead, you change the Containerfile, build a new image, push it to the registry,
-and then let the machine apply that image with `bootc upgrade`.
-
-### Build new Container v2
-Create a Containerfile
-
-In practice, you would keep a single Containerfile and evolve it.
-We split it here into "Version 1" and "Version 2" for clarity.
-```
-FROM 192.168.100.10:5000/fedora-bootc:40
-
-### Version 1 ####
-# Connect to unsafe regs
-RUN mkdir -p /etc/containers/registries.conf.d
-RUN cat > /etc/containers/registries.conf.d/local.conf <<'EOF'
-[[registry]]
-location = "192.168.100.10:5000"
-insecure = true
-EOF
-
-# Correct bootc kargs.d format: TOML
-RUN mkdir -p /usr/lib/bootc/kargs.d
-RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-kargs = ["quiet", "loglevel=3"]
-EOF
-
-# Lower runtime console verbosity too
-RUN mkdir -p /usr/lib/sysctl.d
-RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-kernel.printk = 3 4 1 3
-EOF
-### Version 1 END ###
-
-### Version 2 ###
-# Add some basic tools.
-RUN dnf install -y htop
-RUN dnf clean all
-### Version 2 END ###
-```
-{: file="./Containerfile" }
-
-Build and tag image
-Like before, we use 2 tags: one fixed version and `latest`.
-
-```
-podman build -t 192.168.100.10:5000/my-bootc:2 .
-podman tag 192.168.100.10:5000/my-bootc:2 192.168.100.10:5000/my-bootc:latest
-```
-
-Push to local registry
-```
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
-```
-
-### Apply the update on the VM
-
-Check for a new image:
-```
-sudo bootc upgrade
-```
-
-Apply it
-```
-sudo bootc upgrade --apply
-```
-
-reboot
-```
-sudo reboot
-```
-
 
