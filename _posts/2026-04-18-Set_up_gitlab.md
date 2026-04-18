@@ -44,11 +44,31 @@ Set your URL first (important):
 sudo EXTERNAL_URL="http://192.168.100.11" apt install gitlab-ce
 ```
 
+### Get initial password
+```
+sudo cat /etc/gitlab/initial_root_password
+```
+Login:
+
+user: root
+password: from file
+
+
+### Basic tuning (important for your RAM)
+
+Edit:
+```
+sudo nano /etc/gitlab/gitlab.rb
+```
+
+Suit to your memory restrictions
 
 ```
-[[registry]]
-location = "192.168.100.10:5000"
-insecure = true
+puma['worker_processes'] = 2
+sidekiq['concurrency'] = 5
+prometheus_monitoring['enable'] = false
+grafana['enable'] = false
+alertmanager['enable'] = false
 ```
-{: file="/etc/containers/registries.conf.d/local.conf" }
+{: file="/etc/gitlab/gitlab.rb" }
 
