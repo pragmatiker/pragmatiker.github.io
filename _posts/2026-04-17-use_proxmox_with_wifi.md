@@ -148,6 +148,7 @@ export wifi="wlp2s0"
 
 iptables -A FORWARD -i vmbr0 -o ${wifi} -j ACCEPT
 iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ${wifi} -j MASQUERADE
 
 iptables-save > /etc/iptables/rules.v4
 ```
