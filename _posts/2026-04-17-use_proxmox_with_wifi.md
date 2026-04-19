@@ -78,7 +78,7 @@ iface vmbr0 inet static
 
 ## The DNAT approach
 ### Make VMs able to use the internet
-On proxmox pve
+On Proxmox VE
 IP Forwarding
 ```
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-ip_forwarding.conf
@@ -128,12 +128,12 @@ ssh -p 1022 user@192.168.0.105
 ```
 
 ## The routing Approach
-This one is more flexible, than NAT.
-In case you use a mobile router you will often need to ad a static route to your laptop.
-On most portable routers you cant configure static routes.
+This approach is more flexible than pure port forwarding, because your laptop can access VMs directly by IP.
+In case you use a mobile router you will most likely need to add a static route to your laptop.
+On most portable routers you can't configure static routes.
 
 ### Make VMs able to use the internet
-On proxmox pve
+On Proxmox VE
 
 IP Forwarding
 ```
