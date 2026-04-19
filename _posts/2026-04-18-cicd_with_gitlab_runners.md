@@ -119,7 +119,13 @@ build_container:
     - BUILD_TAG="$CI_COMMIT_SHORT_SHA"
 
     - echo "Building $IMAGE:$BUILD_TAG"
-    - podman build -t "$IMAGE:$BUILD_TAG" .
+    - |
+      podman build \
+        --label org.opencontainers.image.revision="$CI_COMMIT_SHA" \
+        --label org.opencontainers.image.description="$(echo "$CI_COMMIT_MESSAGE" | head -n1)" \
+        --label org.opencontainers.image.source="$CI_PROJECT_URL" \
+        --label org.opencontainers.image.created="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+        -t "$IMAGE:$BUILD_TAG" .
 
     - echo "Tagging latest"
     - podman tag "$IMAGE:$BUILD_TAG" "$IMAGE:latest"
