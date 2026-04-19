@@ -53,7 +53,6 @@ Login:
 user: root
 password: from file
 
-
 ### Basic tuning (important for your RAM)
 
 Edit:
