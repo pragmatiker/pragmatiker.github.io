@@ -81,7 +81,7 @@ iface vmbr0 inet static
 On proxmox pve
 IP Forwarding
 ```
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
+echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-ip_forwarding.conf
 sysctl --system
 ```
 {: file="/etc/sysctl.d/99-ip_forwarding.conf" }
@@ -97,7 +97,7 @@ iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables-save > /etc/iptables/rules.v4
 ```
 
-### Access VMs via (Port Forwarding)
+### Access VMs via Port Forwarding
 To access them (e.g. via SSH / HTTPS), you can forward ports on the Proxmox host.
 
 Example
@@ -137,7 +137,7 @@ On proxmox pve
 
 IP Forwarding
 ```
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
+echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-ip_forwarding.conf
 sysctl --system
 ```
 {: file="/etc/sysctl.d/99-ip_forwarding.conf" }
@@ -158,7 +158,6 @@ iptables-save > /etc/iptables/rules.v4
 ```
 export wifi="wlp2s0"
 
-iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.1 --dport 22 -j ACCEPT
 iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 22 -j ACCEPT
 iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.11 --dport 22 -j ACCEPT
 
