@@ -10,7 +10,7 @@ tags: ["proxmox", "linux", "networking"]
 If you're on the go with your LTE HotSpot, can't run cable in your home or have any other reason to use WiFi with ProxMox.
 I'll shed some light on your options.
 
-WiFi interfaces cannot be bridged like Ethernet in most setups, so when using onboard WiFi you must use routing/NAT instead of bridging.
+WiFi interfaces cannot be bridged like Ethernet in most setups, so when using onboard WiFi you must use routing or DNAT instead of bridging.
 
 # Options
 * The simplest, a WiFi bridge like TPLINK WR802N you can plug into your ProxMox ethernet Port (bridging can work)
@@ -76,8 +76,9 @@ iface vmbr0 inet static
 ```
 {: file="/etc/network/interfaces" }
 
-## Make VMs able to use the internet
-
+## The DNAT approach
+### Make VMs able to use the internet
+On proxmox pve
 IP Forwarding
 ```
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
@@ -96,7 +97,7 @@ iptables -A FORWARD -i ${wifi} -o vmbr0 -m state --state RELATED,ESTABLISHED -j 
 iptables-save > /etc/iptables/rules.v4
 ```
 
-## Access VMs via (Port Forwarding)
+### Access VMs via (Port Forwarding)
 To access them (e.g. via SSH / HTTPS), you can forward ports on the Proxmox host.
 
 Example
@@ -107,17 +108,16 @@ Goal SSH: 192.168.0.105:1022 → 192.168.100.10:22
 Goal HTTPS: 192.168.0.105:10443 → 192.168.100.10:443
 ```
 
+On proxmox pve
 NAT and forwarding rules
 ```
 export wifi="wlp2s0"
 
 iptables -t nat -A PREROUTING -i ${wifi} -p tcp --dport 1022 -j DNAT --to-destination 192.168.100.10:22
 iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 22 -j ACCEPT
-iptables -A FORWARD -i vmbr0 -o ${wifi} -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 iptables -t nat -A PREROUTING -i ${wifi} -p tcp --dport 10443 -j DNAT --to-destination 192.168.100.10:443
 iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 443 -j ACCEPT
-iptables -A FORWARD -i vmbr0 -o ${wifi} -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 iptables-save > /etc/iptables/rules.v4
 ```
@@ -126,7 +126,40 @@ Try to connect
 ```
 ssh -p 1022 user@192.168.0.105
 ```
- 
+
+## The routing Approach
+This one is more flexible, than NAT.
+In case you use a mobile router you will often need to ad a static route to your laptop.
+On most portable routers you cant configure static routes.
+
+### Make VMs able to use the internet
+On proxmox pve
+
+IP Forwarding
+```
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forwarding.conf
+sysctl --system
+```
+{: file="/etc/sysctl.d/99-ip_forwarding.conf" }
+
+Iptables NAT and Forwarding Rules
+```
+export wifi="wlp2s0"
+
+iptables -A FORWARD -i vmbr0 -o ${wifi} -j ACCEPT
+iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+iptables-save > /etc/iptables/rules.v4
+```
+
+### Add static route to Laptop
+
+Via will be the IP Proxmox has on your WiFi
+```
+sudo ip route add 192.168.100.0/24 via 192.168.0.105
+```
+
+
 
 
 
