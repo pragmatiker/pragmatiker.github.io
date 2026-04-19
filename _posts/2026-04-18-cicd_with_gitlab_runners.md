@@ -145,7 +145,7 @@ Rolling: latest
 
 Example:
 
-my-bootc:12
+my-bootc:936d6fc7
 my-bootc:latest
 
 ### Execution Flow
