@@ -103,6 +103,14 @@ Containerfile
 ### GitLab CI Pipeline
 
 My registry is running at: http://192.168.100.10:5000
+
+To have some usefull information on the container, we want
+to add some labels, that we can see with "podman inspect".
+
+- Add the commit_sha to link the image to the commit
+- Add the commit message
+- Add the project URL
+  
 ```
 stages:
   - build
@@ -146,6 +154,7 @@ Rolling: latest
 Example:
 
 my-bootc:936d6fc7
+
 my-bootc:latest
 
 ### Execution Flow
