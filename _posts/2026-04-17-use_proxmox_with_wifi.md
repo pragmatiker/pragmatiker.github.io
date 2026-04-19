@@ -92,7 +92,7 @@ export wifi="wlp2s0"
 
 iptables -t nat -A POSTROUTING -o ${wifi} -j MASQUERADE
 iptables -A FORWARD -i vmbr0 -o ${wifi} -j ACCEPT
-iptables -A FORWARD -i ${wifi} -o vmbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 iptables-save > /etc/iptables/rules.v4
 ```
@@ -142,13 +142,25 @@ sysctl --system
 ```
 {: file="/etc/sysctl.d/99-ip_forwarding.conf" }
 
-Iptables NAT and Forwarding Rules
+Iptables NAT and Forwarding
 ```
 export wifi="wlp2s0"
 
+iptables -t nat -A POSTROUTING -o ${wifi} -j MASQUERADE
 iptables -A FORWARD -i vmbr0 -o ${wifi} -j ACCEPT
 iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -t nat -A POSTROUTING -o ${wifi} -j MASQUERADE
+
+iptables-save > /etc/iptables/rules.v4
+```
+
+### Add inbound rules to acces VMs
+
+```
+export wifi="wlp2s0"
+
+iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.1 --dport 22 -j ACCEPT
+iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.10 --dport 22 -j ACCEPT
+iptables -A FORWARD -i ${wifi} -o vmbr0 -p tcp -d 192.168.100.11 --dport 22 -j ACCEPT
 
 iptables-save > /etc/iptables/rules.v4
 ```
