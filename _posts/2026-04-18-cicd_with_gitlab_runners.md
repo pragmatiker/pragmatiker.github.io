@@ -64,7 +64,6 @@ Copy:
 
 --token XXXXX
 
-
 ### Register
 ```
 sudo gitlab-runner register --token XXXXX
@@ -94,7 +93,6 @@ insecure = true
 sudo -iu gitlab-runner
 podman pull --tls-verify=false 192.168.100.10:5000/fedora-bootc:40
 ```
-
 
 ## Gitlab Project
 
@@ -142,7 +140,7 @@ build_container:
 {: file=".gitlab-ci.yaml" }
 
 ### Tagging Strategy
-Incrementing: $CI_PIPELINE_IID
+Incrementing: $CI_COMMIT_SHORT_SHA
 Rolling: latest
 
 Example:
