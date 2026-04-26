@@ -64,6 +64,7 @@ Copy:
 
 --token XXXXX
 
+
 ### Register
 ```
 sudo gitlab-runner register --token XXXXX
@@ -94,6 +95,7 @@ sudo -iu gitlab-runner
 podman pull --tls-verify=false 192.168.100.10:5000/fedora-bootc:40
 ```
 
+
 ## Gitlab Project
 
 ### Project Structure
@@ -103,14 +105,6 @@ Containerfile
 ### GitLab CI Pipeline
 
 My registry is running at: http://192.168.100.10:5000
-
-To have some usefull information on the container, we want
-to add some labels, that we can see with "podman inspect".
-
-- Add the commit_sha to link the image to the commit
-- Add the commit message
-- Add the project URL
-  
 ```
 stages:
   - build
@@ -126,13 +120,7 @@ build_container:
     - BUILD_TAG="$CI_COMMIT_SHORT_SHA"
 
     - echo "Building $IMAGE:$BUILD_TAG"
-    - |
-      podman build \
-        --label org.opencontainers.image.revision="$CI_COMMIT_SHA" \
-        --label org.opencontainers.image.description="$(echo "$CI_COMMIT_MESSAGE" | head -n1)" \
-        --label org.opencontainers.image.source="$CI_PROJECT_URL" \
-        --label org.opencontainers.image.created="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        -t "$IMAGE:$BUILD_TAG" .
+    - podman build -t "$IMAGE:$BUILD_TAG" .
 
     - echo "Tagging latest"
     - podman tag "$IMAGE:$BUILD_TAG" "$IMAGE:latest"
@@ -149,13 +137,12 @@ build_container:
 {: file=".gitlab-ci.yaml" }
 
 ### Tagging Strategy
-Incrementing: $CI_COMMIT_SHORT_SHA
+Incrementing: $CI_PIPELINE_IID
 Rolling: latest
 
 Example:
 
-my-bootc:936d6fc7
-
+my-bootc:12
 my-bootc:latest
 
 ### Execution Flow

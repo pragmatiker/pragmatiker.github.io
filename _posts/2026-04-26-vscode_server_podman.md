@@ -61,5 +61,5 @@ systemctl --user enable --now container-code-server
 
 Let the Unit start without logging into the account
 ```
-loginctl enable-linger $USER
+sudo loginctl enable-linger $USER
 ```
