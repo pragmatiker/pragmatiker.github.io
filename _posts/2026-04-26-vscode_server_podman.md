@@ -27,16 +27,21 @@ apt install podman -y
 
 ### Create VSCode Server Container
 
+Create folders for persistent Storage
+```
+mkdir -p ~/code-server/{project,config,local}
+```
+
 ```
 podman run -d \
   --name code-server \
   -p 8080:8080 \
-  -v "$HOME/.local:/home/coder/.local" \
-  -v "$HOME/.config:/home/coder/.config" \
-  -v "$PWD:/home/coder/project" \
-  -u "$(id -u):$(id -g)" \
-  -e "DOCKER_USER=$USER" \
-  docker.io/codercom/code-server:latest
+  --userns=keep-id \
+  -v "$HOME/code-server/project:/home/coder/project:Z" \
+  -v "$HOME/code-server/config:/home/coder/.config:Z" \
+  -v "$HOME/code-server/local:/home/coder/.local:Z" \
+  docker.io/codercom/code-server:latest \
+  --bind-addr 0.0.0.0:8080
 ```
 
 ### Create systemd file
