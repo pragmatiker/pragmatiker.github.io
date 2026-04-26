@@ -74,7 +74,7 @@ Settings:
 ```
 URL: http://192.168.100.11 # Gitlab URL
 Executor: shell
-Tags: podman
+Tags: podman, shell
 Description: build-host
 ```
 
@@ -119,6 +119,7 @@ build_container:
   stage: build
   tags:
     - podman
+    - shell
   variables:
     IMAGE: "192.168.100.10:5000/my-bootc"
   script:
