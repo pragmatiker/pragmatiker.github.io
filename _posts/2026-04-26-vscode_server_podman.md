@@ -68,3 +68,15 @@ Let the Unit start without logging into the account
 ```
 sudo loginctl enable-linger $USER
 ```
+
+### Connect
+
+get password
+```
+cat code-server/config/code-server/config.yaml
+```
+
+connect
+```
+http:\\host-ip:8080
+```
