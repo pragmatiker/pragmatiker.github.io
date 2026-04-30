@@ -149,7 +149,7 @@ because we mirror it into a local registry and the tag stays unchanged.
 
 Create a Containerfile
 ```
-FROM 192.168.100.10:5000/fedora-kinoite:42
+FROM 192.168.100.10:5000/kinoite:42
 
 ### Version 1 ####
 # Connect to unsafe regs
@@ -161,16 +161,16 @@ insecure = true
 EOF
 
 # Correct bootc kargs.d format: TOML
-RUN mkdir -p /usr/lib/bootc/kargs.d
-RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-kargs = ["quiet", "loglevel=3"]
-EOF
+#RUN mkdir -p /usr/lib/bootc/kargs.d
+#RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
+#kargs = ["quiet", "loglevel=3"]
+#EOF
 
 # Lower runtime console verbosity too
-RUN mkdir -p /usr/lib/sysctl.d
-RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-kernel.printk = 3 4 1 3
-EOF
+#RUN mkdir -p /usr/lib/sysctl.d
+#RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
+#kernel.printk = 3 4 1 3
+#EOF
 ### Version 1 END ###
 ```
 {: file="./Containerfile" }
@@ -183,20 +183,20 @@ We use two tags:
 - a moving tag (`:latest`) for automatic upgrades
 
 ```
-podman build -t 192.168.100.10:5000/my-bootc:1 .
-podman tag 192.168.100.10:5000/my-bootc:1 192.168.100.10:5000/my-bootc:latest
+podman build -t 192.168.100.10:5000/kinoite-base:42 .
+podman tag 192.168.100.10:5000/kinoite-base:42 192.168.100.10:5000/kinoite-base:stable
 ```
 
 Push to local registry
 ```
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:1
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:stable
 ```
 
 Verify
 ```
 curl http://192.168.100.10:5000/v2/_catalog
-curl http://192.168.100.10:5000/v2/my-bootc/tags/list
+curl http://192.168.100.10:5000/v2/kinoite-base/tags/list
 ```
 
 ## Build DiskImage for Proxmox
@@ -227,7 +227,7 @@ openssl passwd -6
 
 ### Build qcow2 image
 ```
-sudo podman pull 192.168.100.10:5000/my-bootc:latest
+sudo podman pull 192.168.100.10:5000/kinoite-base:stable
 
 sudo podman run --rm -it \
   --privileged \
@@ -240,7 +240,7 @@ sudo podman run --rm -it \
   --type qcow2 \
   --rootfs btrfs \
   --config /config.toml \
-  192.168.100.10:5000/my-bootc:latest
+  192.168.100.10:5000/kinoite-base:stable
 ```
 
 Output:
