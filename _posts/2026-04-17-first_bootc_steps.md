@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "First steps with bootc"
-date: 2026-04-17
+date: 2026-04-30
 author: "TimDude"
 categories: ["Tech", "devops"]
 tags: ["proxmox", "bootc", "podman", "containers"]
