@@ -184,7 +184,7 @@ We use two tags:
 
 ```
 podman build -t 192.168.100.10:5000/kinoite-base:42-v1 .
-podman tag 192.168.100.10:5000/kinoite-base:42 192.168.100.10:5000/kinoite-base:stable
+podman tag 192.168.100.10:5000/kinoite-base:42-v1 192.168.100.10:5000/kinoite-base:stable
 ```
 
 Push to local registry
