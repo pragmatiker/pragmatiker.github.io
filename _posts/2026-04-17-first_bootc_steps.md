@@ -179,8 +179,8 @@ EOF
 Build and tag image
 
 We use two tags:
-- a fixed version (`:1`) for reproducibility
-- a moving tag (`:latest`) for automatic upgrades
+- a fixed version (`:42`) for reproducibility
+- a moving tag (`:stable`) for automatic upgrades
 
 ```
 podman build -t 192.168.100.10:5000/kinoite-base:42 .
