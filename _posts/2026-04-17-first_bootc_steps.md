@@ -7,7 +7,7 @@ categories: ["Tech", "devops"]
 tags: ["proxmox", "bootc", "podman", "containers"]
 ---
 
-So lets experiment with bootable containers.
+So lets experiment with bootable containers. PENIS
 
 At a high level: we are not installing a system — we are building an image and booting it.
 ## Goals
