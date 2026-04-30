@@ -126,8 +126,8 @@ insecure = true
 Example:
 ```
 skopeo copy \
-  docker://quay.io/fedora/fedora-bootc:40 \
-  docker://192.168.100.10:5000/fedora-bootc:40 \
+  docker://quay.io/fedora/fedora-kinoite:42 \
+  docker://192.168.100.10:5000/kinoite:42 \
   --dest-tls-verify=false
 ```
 Verify:
