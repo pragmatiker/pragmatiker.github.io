@@ -227,7 +227,7 @@ openssl passwd -6
 
 ### Build qcow2 image
 ```
-sudo podman --tls-verify=false pull 192.168.100.10:5000/kinoite-base:stable
+sudo podman pull 192.168.100.10:5000/kinoite-base:stable
 
 sudo podman run --rm -it \
   --privileged \
