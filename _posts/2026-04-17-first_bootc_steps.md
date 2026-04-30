@@ -183,13 +183,13 @@ We use two tags:
 - a moving tag (`:stable`) for automatic upgrades
 
 ```
-podman build -t 192.168.100.10:5000/kinoite-base:42 .
+podman build -t 192.168.100.10:5000/kinoite-base:42-v1 .
 podman tag 192.168.100.10:5000/kinoite-base:42 192.168.100.10:5000/kinoite-base:stable
 ```
 
 Push to local registry
 ```
-podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42-v1
 podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:stable
 ```
 
@@ -227,7 +227,7 @@ openssl passwd -6
 
 ### Build qcow2 image
 ```
-sudo podman pull 192.168.100.10:5000/kinoite-base:stable
+sudo podman --tls-verify=false pull 192.168.100.10:5000/kinoite-base:stable
 
 sudo podman run --rm -it \
   --privileged \
@@ -261,7 +261,7 @@ scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
 On the Proxmox host, import the image and create a VM from it.
 
 ```
-qm create 9000 --name fedora-bootc --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+qm create 9000 --name kinoite-base --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
 qm importdisk 9000 disk.qcow2 local-lvm
 qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
 qm set 9000 --boot order=scsi0
@@ -291,7 +291,7 @@ Create a Containerfile
 In practice, you would keep a single Containerfile and evolve it.
 We split it here into "Version 1" and "Version 2" for clarity.
 ```
-FROM 192.168.100.10:5000/fedora-bootc:40
+FROM 192.168.100.10:5000/kinoite-base:42
 
 ### Version 1 ####
 # Connect to unsafe regs
@@ -303,16 +303,16 @@ insecure = true
 EOF
 
 # Correct bootc kargs.d format: TOML
-RUN mkdir -p /usr/lib/bootc/kargs.d
-RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-kargs = ["quiet", "loglevel=3"]
-EOF
+#RUN mkdir -p /usr/lib/bootc/kargs.d
+#RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
+#kargs = ["quiet", "loglevel=3"]
+#EOF
 
 # Lower runtime console verbosity too
-RUN mkdir -p /usr/lib/sysctl.d
-RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-kernel.printk = 3 4 1 3
-EOF
+#RUN mkdir -p /usr/lib/sysctl.d
+#RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
+#kernel.printk = 3 4 1 3
+#EOF
 ### Version 1 END ###
 
 ### Version 2 ###
@@ -324,17 +324,17 @@ RUN dnf clean all
 {: file="./Containerfile" }
 
 Build and tag image
-Like before, we use 2 tags: one fixed version and `latest`.
+Like before, we use 2 tags: one fixed version and `stable`.
 
 ```
-podman build -t 192.168.100.10:5000/my-bootc:2 .
-podman tag 192.168.100.10:5000/my-bootc:2 192.168.100.10:5000/my-bootc:latest
+podman build -t 192.168.100.10:5000/kinoite-base:42-v2 .
+podman tag 192.168.100.10:5000/kinoite-base:42-v1 192.168.100.10:5000/kinoite-base:stable
 ```
 
 Push to local registry
 ```
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:2
-podman push --tls-verify=false 192.168.100.10:5000/my-bootc:latest
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42-v1
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:stable
 ```
 
 ### Apply the update on the VM
