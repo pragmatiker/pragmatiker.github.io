@@ -261,7 +261,7 @@ scp output/qcow2/disk.qcow2 root@192.168.100.1:/root
 On the Proxmox host, import the image and create a VM from it.
 
 ```
-qm create 9000 --name kinoite-base --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+qm create 9000 --name kinoite-base --memory 6144 --cores 2 --net0 virtio,bridge=vmbr0
 qm importdisk 9000 disk.qcow2 local-lvm
 qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
 qm set 9000 --boot order=scsi0
