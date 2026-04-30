@@ -60,16 +60,16 @@ EOF
 ### Start local registry
 Run reg as a container
 ```
-podman run -d \
+podman run -d --replace \
   --name registry \
   -p 5000:5000 \
   -v /srv/registry:/var/lib/registry:Z \
-  -v /srv/registry-config/config.yml:/etc/docker/registry/config.yml:Z \
+  -v /srv/registry-config:/etc/docker/registry:Z,ro \
   docker.io/library/registry:2
 ```
 Run webUI as container
 ```
-podman run -d \
+podman run -d --replace \
   --name registry-ui \
   --restart=always \
   -p 8080:80 \
