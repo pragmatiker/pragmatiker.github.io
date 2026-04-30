@@ -16,7 +16,7 @@ At a high level: we are not installing a system — we are building an image and
 - Upgrade the machine by publishing a new image and applying it with bootc
 
 
-## Registry
+## Registry with webUI
 ### Base system prep
 
 ```
@@ -29,18 +29,59 @@ sudo apt install -y podman skopeo curl
 sudo mkdir -p /srv/registry
 ```
 
+### create config
+
+```
+mkdir -p /srv/registry /srv/registry-config
+
+cat > /srv/registry-config/config.yml <<'EOF'
+version: 0.1
+
+log:
+  fields:
+    service: registry
+
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+
+http:
+  addr: :5000
+  headers:
+    Access-Control-Allow-Origin: ['http://192.168.100.10:8080']
+    Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
+    Access-Control-Allow-Headers: ['Authorization', 'Accept', 'Cache-Control', 'Content-Type']
+    Access-Control-Expose-Headers: ['Docker-Content-Digest']
+EOF
+```
+
 ### Start local registry
 Run reg as a container
 ```
-podman create \
+podman run -d \
   --name registry \
   -p 5000:5000 \
-  -v /srv/registry:/var/lib/registry \
-  registry:2
+  -v /srv/registry:/var/lib/registry:Z \
+  -v /srv/registry-config/config.yml:/etc/docker/registry/config.yml:Z \
+  docker.io/library/registry:2
+```
+Run webUI as container
+```
+podman run -d \
+  --name registry-ui \
+  --restart=always \
+  -p 8080:80 \
+  -e REGISTRY_TITLE="My Registry" \
+  -e REGISTRY_URL="http://192.168.100.10:5000" \
+  -e DELETE_IMAGES=true \
+  docker.io/joxit/docker-registry-ui:main-debian
 ```
 
-### Create systemd service
-Remember it is run from systemd as root.
+
+### Create systemd services
+Remember reg it is run from systemd as root.
 So normal user "podman ps" wont show it
 
 ```
@@ -49,7 +90,15 @@ podman generate systemd --name registry --files --new
 sudo mv container-registry.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now container-registry.service
-sudo podman ps
+sudo podman ps -a
+```
+
+```
+podman generate systemd --name registry-ui --files --new
+sudo mv container-registry-ui.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now container-registry-ui.service
+sudo podman ps -a
 ```
 
 verify
