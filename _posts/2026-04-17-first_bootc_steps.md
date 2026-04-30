@@ -333,7 +333,7 @@ podman tag 192.168.100.10:5000/kinoite-base:42-v1 192.168.100.10:5000/kinoite-ba
 
 Push to local registry
 ```
-podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42-v1
+podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:42-v2
 podman push --tls-verify=false 192.168.100.10:5000/kinoite-base:stable
 ```
 
