@@ -160,17 +160,8 @@ location = "192.168.100.10:5000"
 insecure = true
 EOF
 
-# Correct bootc kargs.d format: TOML
-#RUN mkdir -p /usr/lib/bootc/kargs.d
-#RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-#kargs = ["quiet", "loglevel=3"]
-#EOF
-
-# Lower runtime console verbosity too
-#RUN mkdir -p /usr/lib/sysctl.d
-#RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-#kernel.printk = 3 4 1 3
-#EOF
+RUN localectl set-keymap de
+RUN localectl set-x11-keymap de pc105
 ### Version 1 END ###
 ```
 {: file="./Containerfile" }
@@ -291,7 +282,7 @@ Create a Containerfile
 In practice, you would keep a single Containerfile and evolve it.
 We split it here into "Version 1" and "Version 2" for clarity.
 ```
-FROM 192.168.100.10:5000/kinoite-base:42
+FROM 192.168.100.10:5000/kinoite:42
 
 ### Version 1 ####
 # Connect to unsafe regs
@@ -302,17 +293,8 @@ location = "192.168.100.10:5000"
 insecure = true
 EOF
 
-# Correct bootc kargs.d format: TOML
-#RUN mkdir -p /usr/lib/bootc/kargs.d
-#RUN cat > /usr/lib/bootc/kargs.d/10-console.toml <<'EOF'
-#kargs = ["quiet", "loglevel=3"]
-#EOF
-
-# Lower runtime console verbosity too
-#RUN mkdir -p /usr/lib/sysctl.d
-#RUN cat > /usr/lib/sysctl.d/10-kernel-printk.conf <<'EOF'
-#kernel.printk = 3 4 1 3
-#EOF
+RUN localectl set-keymap de
+RUN localectl set-x11-keymap de pc105
 ### Version 1 END ###
 
 ### Version 2 ###
