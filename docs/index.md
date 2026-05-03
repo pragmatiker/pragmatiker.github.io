@@ -10,7 +10,7 @@ Willkommen in den Lab- und Notiz-Dokumenten.
 
 ## Letzte migrierte Seiten
 
-- [1. Home lab lan Structure](tech/home-lab-lan.md)
+- [Home lab lan Structure](tech/home-lab-lan.md)
 - [Set up BIND for ProxMox lab](tech/dns-for-lab.md)
 - [VSCode Server in Podman](tech/vscode-server-podman.md)
 - [First steps with bootc](tech/first-bootc-steps.md)
