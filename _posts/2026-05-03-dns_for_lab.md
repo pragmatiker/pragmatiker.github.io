@@ -15,7 +15,7 @@ So lets setup a DNS Server for our Lab
 - Bind TLS Cert to DNS Names instead IPs
 
 ## Install and configure Bind
-Pretty lighrtweigth setup. Debian VM with 512M will do
+Pretty lighrtweigth setup. Debian Netinstall VM with 256M RAM will do
 
 ### Install packages
 
@@ -28,6 +28,9 @@ apt install bind9 bind9-utils dnsutils
 
 We will enable forwarders so Lab VMs can not only resolve lab internal host
 but also still use the internet for updates.
+
+Our lab lan is 192.168.100.0/24, the DNS VM ip is 192.168.100.2 and bind will listen on that adress as well. Forwarders will be Cloudflare and google.
+
 ```
 options {
     directory "/var/cache/bind";
