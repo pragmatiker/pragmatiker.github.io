@@ -6,9 +6,9 @@ Willkommen in den Lab- und Notiz-Dokumenten.
 
 - **Tech**: Home-Lab, Proxmox, GitLab, DNS, bootc, Podman
 - **Reisen**: Packlisten und Touren
-- **Meta**: Dokumentation über diese Doku
 
-## Letzte migrierte Seiten
+
+## Letzte migrierte Seiten P
 
 - [Home lab lan Structure](tech/home-lab-lan.md)
 - [Set up BIND for ProxMox lab](tech/dns-for-lab.md)
