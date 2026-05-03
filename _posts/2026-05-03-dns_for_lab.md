@@ -51,7 +51,7 @@ Define the Zones we want to have
 ```
 zone "lab.lan" {
     type master;
-    file "/etc/bind/db.lab.db
+    file "/etc/bind/lab.lan.db
 };
 ```
 {: file="/etc/bind/named.conf.local
@@ -75,8 +75,43 @@ gitlab   IN A  192.168.100.11
 ```
 {: file="/etc/bind/lab.lan.db
 
+### Start Service 
+Check and restart sercvice
+
+```
+named-checkconf
+named-checkzone lab.lan /etc/bind/db.lab.lan
+systemctl restart bind9
+systemctl status bind9
+```
+
+## Test from a Lab vm
+
+Now we got the DNS Server up an running. 
+Lets test from a Clinet if it can resolve local and internet hosts
+
+### Setup resolver
+
+On Debian i did this
+```
+$TTL 3600
+@   IN SOA ns.lab.lan. admin.lab.lan. (
+        2026050301
+        3600
+        900
+        604800
+        3600 )
+
+@        IN NS ns.lab.lan.
+ns       IN A  192.168.100.2
+registry IN A  192.168.100.10
+gitlab   IN A  192.168.100.11
+
+```
+{: file="/etc/bind/lab.lan.db
 
 
+### Test Name resolution
 
 
 
