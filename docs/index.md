@@ -20,4 +20,4 @@ Willkommen in den Lab- und Notiz-Dokumenten.
 - [Router VM for my ProxMox Lab](tech/router-vm-for-proxmox-lab.md)
 - [Running Jekyll locally](tech/run-jekyll-locally.md)
 - [Kungsleden 2025 - Packliste](reisen/kungleden-2025-packliste.md)
-- [How to Write a Jekyll Post](meta/how-to-write-a-jekyll-post.md)
+- [How to Write a Jekyll Post](tech/how-to-write-a-jekyll-post.md)
