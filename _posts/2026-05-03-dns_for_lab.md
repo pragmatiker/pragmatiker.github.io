@@ -3,7 +3,7 @@ layout: post
 title: "Set up BIND for ProxMox lab"
 date: 2026-05-03
 author: "TimDude"
-categories: ["Tech", "devops"]
+categories: ["Tech", "Home lab"]
 tags: ["dns", "infrastruktur"]
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: "First steps with bootc"
 date: 2026-04-18
 author: "TimDude"
-categories: ["Tech", "devops"]
-tags: ["proxmox", "bootc", "podman", "containers"]
+categories: ["Tech", "Home lab"]
+tags: ["proxmox", "bootc", "podman", "containers", "devops"]
 ---
 
 So lets experiment with bootable containers.
