@@ -46,7 +46,7 @@ nav:
 - Home: index.md
 - Tech:
   - Home Lab:
-    - 1. Home lab lan Structure: tech/home-lab-lan.md
+    - Home lab lan Structure: tech/home-lab-lan.md
     - Router VM for my ProxMox Lab: tech/router-vm-for-proxmox-lab.md
     - First steps with bootc: tech/first-bootc-steps.md
     - Using ProxMox with WiFi: tech/use-proxmox-with-wifi.md
