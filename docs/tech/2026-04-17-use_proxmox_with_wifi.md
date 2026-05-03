@@ -1,10 +1,10 @@
 ---
-layout: post
 title: "Using ProxMox with WiFi"
 date: 2026-04-17
-author: "TimDude"
-categories: ["Tech","Home lab"]
-tags: ["proxmox", "linux", "networking"]
+tags: 
+  - proxmox
+  - linux
+  - networking
 ---
 
 If you're on the go with your LTE HotSpot, can't run cable in your home or have any other reason to use WiFi with ProxMox.

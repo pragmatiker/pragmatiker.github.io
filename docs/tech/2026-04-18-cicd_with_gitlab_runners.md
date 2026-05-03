@@ -1,10 +1,9 @@
 ---
-layout: post
 title: "CI/CD via GitLab Runners"
 date: 2026-04-17
-author: "TimDude"
-categories: ["Tech", "devops"]
-tags: ["gitlab", "ci-cd"]
+tags:
+  - gitlab
+  - ci-cd
 ---
 
 So lets set up a Pipeline for buidling containers

@@ -1,10 +1,13 @@
 ---
-layout: post
-title: "1. Home lab lan Structure"
+title: "Home lab lan Structure"
 date: 2026-05-03
-author: "TimDude"
-categories: ["Tech","Home lab"]
-tags: ["proxmomx", "pki", "dns", "podman", "blue-build", "gitlab"]
+tags:
+  - proxmomx
+  - pki
+  - dns
+  - podman
+  - blue-build
+  - gitlab
 ---
 
 

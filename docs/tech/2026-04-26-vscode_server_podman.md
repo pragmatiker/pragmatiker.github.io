@@ -1,10 +1,9 @@
 ---
-layout: post
 title: "VSCode Server in Podman"
 date: 2026-04-26
-author: "TimDude"
-categories: ["Tech", "devops"]
-tags: ["podman", "vscode"]
+tags:
+  - podman
+  - vscode
 ---
 
 So lets run VSCode in a Webbrowser via VSCode Serer running in a conatiner on podman

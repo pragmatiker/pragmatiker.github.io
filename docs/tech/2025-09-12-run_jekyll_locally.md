@@ -1,10 +1,9 @@
 ---
-layout: post
 title: "Running Jekyll locally"
 date: 2025-09-12
-author: "TimDude"
-categories: ["Tech", "Jekyll"]
-tags: ["proxmox", "linux", "routing"]
+tags: 
+  - jekyll
+  - ssg
 ---
 
 To delevop faster I want to run jekyll locally and push to GitHub Pages

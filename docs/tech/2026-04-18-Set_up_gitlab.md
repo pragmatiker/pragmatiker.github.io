@@ -1,10 +1,10 @@
 ---
-layout: post
 title: "Set up Gitlab"
 date: 2026-04-17
-author: "TimDude"
-categories: ["Tech", "Home lab"]
-tags: ["gitlab", "ci-cd","devops"]
+tags:
+  - gitlab
+  - ci-cd
+  - devops
 ---
 
 So lets set up gitlab
