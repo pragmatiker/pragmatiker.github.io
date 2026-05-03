@@ -8,7 +8,7 @@ Willkommen in den Lab- und Notiz-Dokumenten.
 - **Reisen**: Packlisten und Touren
 
 
-## Letzte migrierte Seiten P
+## Letzte migrierte Seiten Pw
 
 - [Home lab lan Structure](tech/home-lab-lan.md)
 - [Set up BIND for ProxMox lab](tech/dns-for-lab.md)
