@@ -73,7 +73,7 @@ registry IN A  192.168.100.10
 gitlab   IN A  192.168.100.11
 
 ```
-{: file="/etc/bind/lab.lan.db
+{: file="/etc/bind/lab.lan.db"}
 
 ### Start Service 
 Check and restart sercvice
@@ -94,25 +94,32 @@ Lets test from a Clinet if it can resolve local and internet hosts
 
 On Debian i did this
 ```
-$TTL 3600
-@   IN SOA ns.lab.lan. admin.lab.lan. (
-        2026050301
-        3600
-        900
-        604800
-        3600 )
-
-@        IN NS ns.lab.lan.
-ns       IN A  192.168.100.2
-registry IN A  192.168.100.10
-gitlab   IN A  192.168.100.11
+search lab.lan
+nameserver 192.168.100.2
 
 ```
-{: file="/etc/bind/lab.lan.db
+{: file="/etc/resolv.conf"}
 
 
 ### Test Name resolution
+One shot at the interwebs one local
 
+```
+root@registry:# nslookup google.de
+Server:		192.168.100.2
+Address:	192.168.100.2#53
+
+Non-authoritative answer:
+Name:	google.de
+Address: 142.251.20.94
+
+root@registry:# nslookup gitlab
+Server:		192.168.100.2
+Address:	192.168.100.2#53
+
+Name:	gitlab.lab.lan
+Address: 192.168.100.11
+```
 
 
 
