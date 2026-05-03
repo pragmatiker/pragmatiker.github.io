@@ -54,7 +54,7 @@ nav:
     - Set up BIND for ProxMox lab: tech/dns-for-lab.md
   - Site:
     - Running Jekyll locally: tech/run-jekyll-locally.md
-    - How to Write a Jekyll Post: meta/how-to-write-a-jekyll-post.md
+    - How to Write a Jekyll Post: tech/how-to-write-a-jekyll-post.md
   - DevOps:
     - CI/CD via GitLab Runners: tech/cicd-with-gitlab-runners.md
     - VSCode Server in Podman: tech/vscode-server-podman.md
