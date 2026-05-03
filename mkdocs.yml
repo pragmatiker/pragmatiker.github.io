@@ -1,0 +1,64 @@
+site_name: Pragmatiker Docs
+site_url: https://pragmatiker.github.io/
+theme:
+  name: material
+  language: de
+  features:
+  - navigation.instant
+  - navigation.tracking
+  - navigation.sections
+  - navigation.expand
+  - navigation.top
+  - content.code.copy
+  - content.code.select
+  - content.tabs.link
+  - search.suggest
+  - search.highlight
+  palette:
+  - scheme: slate
+    primary: blue grey
+    accent: cyan
+    toggle:
+      icon: material/weather-sunny
+      name: Light Mode
+  - scheme: default
+    primary: blue grey
+    accent: cyan
+    toggle:
+      icon: material/weather-night
+      name: Dark Mode
+markdown_extensions:
+- admonition
+- attr_list
+- md_in_html
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.inlinehilite
+- pymdownx.snippets
+- pymdownx.superfences
+- pymdownx.tabbed
+- pymdownx.details
+- tables
+- toc
+plugins:
+- search
+nav:
+- Home: index.md
+- Tech:
+  - Home Lab:
+    - 1. Home lab lan Structure: tech/home-lab-lan.md
+    - Router VM for my ProxMox Lab: tech/router-vm-for-proxmox-lab.md
+    - First steps with bootc: tech/first-bootc-steps.md
+    - Using ProxMox with WiFi: tech/use-proxmox-with-wifi.md
+    - Set up Gitlab: tech/set-up-gitlab.md
+    - Set up BIND for ProxMox lab: tech/dns-for-lab.md
+  - Site:
+    - Running Jekyll locally: tech/run-jekyll-locally.md
+    - How to Write a Jekyll Post: meta/how-to-write-a-jekyll-post.md
+  - DevOps:
+    - CI/CD via GitLab Runners: tech/cicd-with-gitlab-runners.md
+    - VSCode Server in Podman: tech/vscode-server-podman.md
+- Reisen:
+  - Kungsleden 2025 - Packliste: reisen/kungleden-2025-packliste.md
+
+- About: about.md
