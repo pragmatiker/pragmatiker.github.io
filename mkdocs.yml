@@ -16,13 +16,13 @@ theme:
   - search.highlight
   palette:
   - scheme: slate
-    primary: blue grey
+    primary: indigo
     accent: cyan
     toggle:
       icon: material/weather-sunny
       name: Light Mode
   - scheme: default
-    primary: blue grey
+    primary: indigo
     accent: cyan
     toggle:
       icon: material/weather-night
