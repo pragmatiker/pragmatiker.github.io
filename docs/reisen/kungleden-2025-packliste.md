@@ -71,6 +71,10 @@ Abendessen:
 * Bifi
 * 20ml Olivenöl
 
-{% include gallery.html images=page.images %}
+<figure markdown="span">
+  ![Image title](assets/images/reisen/kungsleden-2025-packlistdummyimage.com/600x400/){ width="300" }
+  <figcaption>Image caption</figcaption>
+</figure>
+
 
 
