@@ -72,7 +72,7 @@ Abendessen:
 * 20ml Olivenöl
 
 <figure markdown="span">
-  ![Image title](kungsleden-2025-packliste/gear.jpg){ width="300" }
+  ![Image title](gear.jpg){ width="300" }
   <figcaption>Image caption</figcaption>
 </figure>
 
