@@ -29,12 +29,14 @@ Meine Packliste für den Kungsleden
 * Schlappen
 
 ## Kleidung Tagsüber
+Nachtrag:  Vivobarefoot Magnatrail nicht zu Empfehlen, Steine drücken sich zu stark in den Fuß.
+
 * 2x Baselayer shirts - Merino Decathlon
 * 2x Funktions Unnerbux - Danish endurance
 * 2x Wandersocken - Injinji Socks
 * wanderhose - Endura Singeltrack
 * Shorts - Underarmour
-* Wanderschuh - Vivobarefoot Magnatrail (Nachtrag, nicht zu Epmfphlen Steine drücken sich zu stark in den Fuß)
+* Wanderschuh - Vivobarefoot Magnatrail 
 
 ## Hygiene
 * Seife 20ml
@@ -54,7 +56,10 @@ Meine Packliste für den Kungsleden
 * Powerbank Nitecore NB10000
 * Wanderführer
 
-## Verpflegung 8x (Nachtrag, nur für 3 Tage Futter tragen, sonst einkuafen.)
+## Verpflegung 8x 
+
+Nachtrag, nur für 3 Tage Futter tragen, sonst an den Hütten einkaufen.
+
 Frühstück:
 
 * 100g Haferflocken + 40g Whey + 30g Erdnussbutter
