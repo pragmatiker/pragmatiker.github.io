@@ -8,12 +8,12 @@ tags:
 Meine Packliste für den Kungsleden
 
 ## Ausrüstung
-* Osprey Kestrel 58l
-* Tarptent Double Rainbow
-* Thermarest NeoAir
-* Western Mountaineering Apache
-* Trekkingstöcke Komperdell Carbon
-* FireMaple Petrel +  GreenPeak Gas Stove + Katusche + Minibic
+* Rucksack - Osprey Kestrel 58l
+* Zelt - Tarptent Double Rainbow
+* Isomatte - Thermarest NeoAir
+* Schlafsack - Western Mountaineering Apache
+* Trekkingstöcke - Komperdell Carbon
+* Gaskocher - FireMaple Petrel +  GreenPeak Gas Stove + Katusche + Minibic
 * Löffel
 * Trockensack (Müllbeutel 120l)
 
