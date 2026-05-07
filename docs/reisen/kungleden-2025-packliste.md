@@ -18,23 +18,23 @@ Meine Packliste für den Kungsleden
 * Trockensack (Müllbeutel 120l)
 
 ## Kleidung abends/kalt/nass
-* Patagonia Torrentshell
-* Daunenjacke
-* Merino longsleeve
-* Regenhose Decathlon
+* Regenjacke - Patagonia Torrentshell
+* Daunenjacke Decathlon MT100
+* Merino longsleeve - Ullmax Ullfrotte
+* Regenhose - Decathlon
 * Buff
-* Dünne Handschuhe
+* Dünne Handschuhe - Decathlon
 * Unterhose
 * Wollsocken
 * Schlappen
 
 ## Kleidung Tagsüber
-* 2x Baselayer shirts 
-* 2x Funktions Unnerbux
-* 2x Wandersocken Injinji
-* Fjällräven Vidda Pro
-* Shorts
-* Wanderschuh Vivobarefoot Magnatrail
+* 2x Baselayer shirts - Merino Decathlon
+* 2x Funktions Unnerbux - Danish endurance
+* 2x Wandersocken - Injinji Socks
+* wanderhose - Endura Singeltrack
+* Shorts - Underarmour
+* Wanderschuh - Vivobarefoot Magnatrail (Nachtrag, nicht zu Epmfphlen Steine drücken sich zu stark in den Fuß)
 
 ## Hygiene
 * Seife 20ml
@@ -54,7 +54,7 @@ Meine Packliste für den Kungsleden
 * Powerbank Nitecore NB10000
 * Wanderführer
 
-## Verpflegung 8x
+## Verpflegung 8x (Nachtrag, nur für 3 Tage Futter tragen, sonst einkuafen.)
 Frühstück:
 * 100g Haferflocken + 40g Whey + 30g Erdnussbutter
 
@@ -73,7 +73,7 @@ Abendessen:
 
 <figure markdown="span">
   ![Image title](gear.jpg){ width="500" }
-  <figcaption>Image caption</figcaption>
+  <figcaption>All my Stuff :)</figcaption>
 </figure>
 
 
