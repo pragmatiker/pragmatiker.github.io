@@ -63,18 +63,27 @@ step certificate create "My Root CA" root.crt root.key \
 
 ### Set up the Intermediate Certificate Authority
 
-Sign the Intermediate with the Root CA
+Sign the Intermediate with the existing Root CA and generate a Config
 
 ```
 mkdir -p /opt/step-intermediate
 cd /opt/step-intermediate
 
-step certificate create "My Intermediate CA" intermediate.crt intermediate.key \
---profile intermediate-ca --kty RSA --size 4096 \
---ca /opt/step-root/root.crt --ca-key /opt/step-root/root.key
+step ca init \
+  --name "My Existing CA" \
+  --root /opt/step-root/root.crt \
+  --key /opt/step-root/root.key \
+  --dns ca.lab.lan \
+  --address :443 \
+  --deployment-type standalone \
+  --provisioner ca@lab.lan
 ```
 
-
+### Copy created Config and Certs to podman location
+```
+mkdir -p /opt/step/ca
+cp -av /root/.step/* /opt/step/ca
+```
 
 ### Set up the podman container
 
