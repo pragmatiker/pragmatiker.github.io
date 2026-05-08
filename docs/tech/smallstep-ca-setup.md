@@ -94,7 +94,7 @@ apt install -y podman
 ```
 podman run -d \
   --name step-ca \
-  -p 9000:9000 \
+  -p 443:9000 \
   -v /opt/step/ca:/home/step:Z \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:9000" \
