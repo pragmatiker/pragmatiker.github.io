@@ -49,7 +49,7 @@ sudo apt update
 sudo apt install step-cli
 ```
 
-### Set UP the Root Certificate Authorotie
+### Set UP the Root Certificate Authority
 
 First the Root CA
 
@@ -61,7 +61,7 @@ step certificate create "My Root CA" root.crt root.key \
 --profile root-ca --kty RSA --size 4096
 ```
 
-### Set up the Intermediate Certificate Authorotie
+### Set up the Intermediate Certificate Authority
 
 Sign the Intermediate with the Root CA
 
