@@ -92,10 +92,17 @@ apt install -y podman
 ```
 
 ```
+sudo useradd --system --uid 2000 --home /nonexistent --shell /usr/sbin/nologin stepca
+sudo chown -R 2000:2000 /opt/step/ca
+```
+
+```
+podman rm -f step-ca
 podman run -d \
   --name step-ca \
   -p 443:9000 \
   -v /opt/step/ca:/home/step:Z \
+  --user 2000:2000 \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:9000" \
   docker.io/smallstep/step-ca \
