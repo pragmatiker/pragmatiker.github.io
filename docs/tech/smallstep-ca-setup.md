@@ -124,3 +124,15 @@ podman run -d \
   docker.io/smallstep/step-ca \
   step-ca /home/step/config/ca.json --password-file /home/step/secrets/password
 ```
+
+## Setup trust on clients
+
+
+For Debian / Ubuntu
+```
+sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
+  https://ca.lab.lan/root_ca.crt \
+  --no-check-certificate
+
+sudo update-ca-certificates
+```
