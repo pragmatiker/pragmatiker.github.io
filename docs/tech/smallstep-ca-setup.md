@@ -83,6 +83,7 @@ step ca init \
 ```
 mkdir -p /opt/step/ca
 cp -av /root/.step/* /opt/step/ca
+echo "CaPa$$word" > /opt/step/ca/secrets/password
 ```
 
 ### Set up the podman container
@@ -106,5 +107,5 @@ podman run -d \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:9000" \
   docker.io/smallstep/step-ca \
-  step-ca /home/step/config/ca.json
+  step-ca /home/step/config/ca.json --password-file /home/step/secrets/password
 ```
