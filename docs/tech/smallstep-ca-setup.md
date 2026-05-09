@@ -109,6 +109,7 @@ sed -i "s|${STEPPATH}|/home/step|g" ${STEPPATH}/config/defaults.json
 
 Move Files from user to system location and reset STEPPATH var.
 ```
+sudo mkdir /opt/step-ca
 sudo cp -avi ${STEPPATH}/* /opt/step-ca
 export STEPPATH=/opt/step-ca
 ```
@@ -127,8 +128,8 @@ sudo chown -R 2000:2000 ${STEPPATH}
 ```
 
 ```
-podman rm -f step-ca
-podman run -d \
+sudo podman rm -f step-ca
+sudo podman run -d \
   --name step-ca \
   -p 443:443 \
   -v ${STEPPATH}:/home/step:Z \
