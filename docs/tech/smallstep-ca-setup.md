@@ -1,5 +1,5 @@
 ---
-title: "Set up Gitlab"
+title: "Set up a small Certificate Authority with stepca"
 date: 2026-05-7
 tags:
   - pki
