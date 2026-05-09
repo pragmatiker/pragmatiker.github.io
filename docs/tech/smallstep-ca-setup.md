@@ -64,15 +64,29 @@ step certificate create "My Root CA" root.crt root.key \
 
 ### Set up the Intermediate Certificate Authority
 
+Create Dirs for Secrets. This will contain pricate keys and 
+```
+export STEPPATH=/opt/step/ca
+mkdir -p $STEPPATH/secrets
+```
+
+Store the Intermediate passphrase
+```
+echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
+```
+
+Store the initial proisioner passphrase
+```
+echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
+```
+
 Sign the Intermediate with the existing Root CA and generate a Config.
-You will be asked for the Root Ca Passphrase and for a Passphrase for the new,
-intermediate CA.
+You will be asked for the Root Ca Passphrase.
+Provisioner and Ca key will be passed in via the files generate dearlier
 
 ```
 mkdir -p /opt/step-intermediate
 cd /opt/step-intermediate
-
-export STEPPATH=/opt/step/ca
 
 step ca init \
   --name "My Existing CA" \
@@ -81,15 +95,12 @@ step ca init \
   --dns ca.lab.lan \
   --address :443 \
   --deployment-type standalone \
-  --provisioner ca@lab.lan
+  --provisioner ca@lab.lan \
+  --password-file /home/step/secrets/ca_key_password \
+  --provisioner-password-file /home/step/secrets/provisioner_password
 ```
 
 ### Alter the Config to suite Container 
-
-Store the Intermediate passphrase
-```
-echo 'CaPa$$word' > $STEPPATH/secrets/password
-```
 
 Rewrite host paths to container paths 
 ```
@@ -120,7 +131,9 @@ podman run -d \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:443" \
   docker.io/smallstep/step-ca \
-  step-ca /home/step/config/ca.json --password-file /home/step/secrets/password
+  step-ca /home/step/config/ca.json \
+  --password-file /home/step/secrets/ca_key_password \
+  --provisioner-password-file /home/step/secrets/provisioner_password
 ```
 
 ## Setup trust on clients
