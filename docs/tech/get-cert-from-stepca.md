@@ -17,7 +17,7 @@ tags:
 
 ### Install Package
 
-Install some basic utils
+Install some basic utils adn the gpg key
 ```
 sudo apt update
 sudo apt install -y curl gnupg
