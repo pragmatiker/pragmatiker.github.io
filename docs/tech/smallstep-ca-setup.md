@@ -91,7 +91,7 @@ Store the Intermediate passphrase
 echo 'CaPa$$word' > $STEPPATH/secrets/password
 ```
 
-Transform paths in configs to match paths inside Container environment. 
+Rewrite host paths to container paths 
 ```
 sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/ca.json
 sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/defaults.json
