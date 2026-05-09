@@ -97,6 +97,7 @@ This only works if you have a local step user
 ```
 sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
 sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
+```
 
 ### Set up the podman container
 
