@@ -84,9 +84,16 @@ step ca init \
   --provisioner ca@lab.lan
 ```
 
+### Alter the Config to suite Container 
+
 Store the Intermediate passphrase
 ```
 echo 'CaPa$$word' > $STEPPATH/secrets/password
+```
+Transform paths in configs to match paths inside Container environment. 
+```
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
 ```
 
 ### Set up the podman container
