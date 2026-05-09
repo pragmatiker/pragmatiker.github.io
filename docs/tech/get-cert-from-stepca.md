@@ -7,6 +7,16 @@ tags:
   - devops
 ---
 
+## Goals
+- remotely get Certs from StepCA Service
+ - with step cli
+ - with ACME certbot
+
+
+## Using Step CLI
+
+### Install Package
+
 Install some basic utils
 ```
 sudo apt update
@@ -29,6 +39,14 @@ Signed-By: /etc/apt/keyrings/smallstep.asc
 EOF
 ```
 
+Install the cli
+```
+sudo apt update
+sudo apt install step-cli
+```
+
+### Setup the step CLI
+
 Put RootCA in locla Trust Store
 ```
 sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
@@ -38,7 +56,7 @@ sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
 sudo update-ca-certificates
 ```
 
-Bootstrap step cli
+Bootstrap step cli with URL and RootCA fingerprint
 ```
 export FP=$(curl -s  https://ca.lab.lan/roots.pem | openssl x509 -noout -sha256 -fingerprint | awk -F'=' ' {gsub(":",""); print $2}')
 
