@@ -88,7 +88,7 @@ step ca init \
 ```
 mkdir -p /opt/step/ca
 cp -av /root/.step/* /opt/step/ca
-echo "CaPa$$word" > /opt/step/ca/secrets/password
+echo 'CaPa$$word' > /opt/step/ca/secrets/password
 ```
 Transform paths to match Container environment.
 step ca init put everything under /$HOME/.step.
