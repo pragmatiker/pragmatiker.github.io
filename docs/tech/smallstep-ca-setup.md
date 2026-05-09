@@ -68,10 +68,11 @@ Sign the Intermediate with the existing Root CA and generate a Config.
 You will be asked for the Root Ca Passphrase and for a Passphrase for the new,
 intermediate CA.
 
-
 ```
 mkdir -p /opt/step-intermediate
 cd /opt/step-intermediate
+
+export STEPPATH=/opt/step/ca
 
 step ca init \
   --name "My Existing CA" \
@@ -83,20 +84,9 @@ step ca init \
   --provisioner ca@lab.lan
 ```
 
-
-### Copy created Config and Certs to podman location
+Store the Intermediate passphrase
 ```
-mkdir -p /opt/step/ca
-cp -av /root/.step/* /opt/step/ca
-echo 'CaPa$$word' > /opt/step/ca/secrets/password
-```
-Transform paths to match Container environment.
-step ca init put everything under /$HOME/.step.
-This only works if you have a local step user 
-
-```
-sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
-sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
+echo 'CaPa$$word' > $STEPPATH/secrets/password
 ```
 
 ### Set up the podman container
@@ -109,7 +99,7 @@ apt install -y podman
 Add a system user for stepca and give it acces to files.
 ```
 sudo useradd --system --uid 2000 --home /nonexistent --shell /usr/sbin/nologin stepca
-sudo chown -R 2000:2000 /opt/step/ca
+sudo chown -R 2000:2000 $STEPPATH
 ```
 
 ```
@@ -117,7 +107,7 @@ podman rm -f step-ca
 podman run -d \
   --name step-ca \
   -p 443:443 \
-  -v /opt/step/ca:/home/step:Z \
+  -v $STEPPATH:/home/step:Z \
   --user 2000:2000 \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:443" \
