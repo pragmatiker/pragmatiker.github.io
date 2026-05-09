@@ -72,12 +72,13 @@ mkdir -p $STEPPATH/secrets
 
 Store the Intermediate passphrase
 ```
-echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
+echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
 ```
 
-Store the initial proisioner passphrase
+Store the initial provisioner passphrase.
+Put this in PW Manager. We will delete this file after init.
 ```
-echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
+echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
 ```
 
 Sign the Intermediate with the existing Root CA and generate a Config.
@@ -96,8 +97,9 @@ step ca init \
   --address :443 \
   --deployment-type standalone \
   --provisioner ca@lab.lan \
-  --password-file /home/step/secrets/ca_key_password \
-  --provisioner-password-file /home/step/secrets/provisioner_password
+  --password-file $STEPPATH/secrets/ca_key_password \
+  --provisioner-password-file $STEPPATH/secrets/provisioner_password
+rm -v $STEPPATH/secrets/provisioner_password
 ```
 
 ### Alter the Config to suite Container 
@@ -131,9 +133,7 @@ podman run -d \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:443" \
   docker.io/smallstep/step-ca \
-  step-ca /home/step/config/ca.json \
-  --password-file /home/step/secrets/ca_key_password \
-  --provisioner-password-file /home/step/secrets/provisioner_password
+  step-ca /home/step/config/ca.json --password-file /home/step/secrets/ca_key_password
 ```
 
 ## Setup trust on clients
