@@ -47,15 +47,15 @@ sudo apt update
 sudo apt install step-cli
 ```
 
-### Set UP the Root Certificate Authority
+### Set up the Root Certificate Authority
 
 First the Root CA.
-Store this offline, give it a strong Password.
-
+The Root CA should remain offline after signing the Intermediate CA.
+Daily certificate issuance is handled by the Intermediate CA.
 ```
 export ROOTCA=/opt/RootCA
-sudo mkdir -p $ROOTCA
-cd $ROOTCA
+sudo install -d -m 700 ${ROOTCA}
+cd ${ROOTCA}
 
 step certificate create "My Root CA" root.crt root.key \
 --profile root-ca --kty RSA --size 4096
@@ -66,45 +66,45 @@ step certificate create "My Root CA" root.crt root.key \
 This will contain private keys and password files.
 ```
 export STEPPATH=/opt/step-ca
-mkdir -p $STEPPATH/secrets
+install -d -m 700 ${STEPPATH}/secrets
 ```
 
 Store the Intermediate CA key password.
 ```
-umask 0077; echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
+umask 0077; echo 'CaPa$$word' > ${STEPPATH}/secrets/ca_key_password
 ```
 
 The provisioner password is only needed during initialization.
 The running CA only requires access to the Intermediate CA key password.
 Put this in PW Manager. We will delete this file after init.
 ```
-umask 0077; echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
+umask 0077; echo 'ProvPa$$word' > ${STEPPATH}/secrets/provisioner_password
 ```
 
 Sign the Intermediate with the existing Root CA and generate a Config.
 You will be asked for the Root Ca Passphrase.
-Provisioner and Ca key will be passed in via the files generated dearlier
+Provisioner and Ca key will be passed in via the files generated earlier
 
 ```
 step ca init \
   --name "My Existing CA" \
-  --root $ROOTCA/root.crt \
-  --key $ROOTCA/root.key \
+  --root ${ROOTCA}/root.crt \
+  --key ${ROOTCA}/root.key \
   --dns ca.lab.lan \
   --address :443 \
   --deployment-type standalone \
   --provisioner ca@lab.lan \
-  --password-file $STEPPATH/secrets/ca_key_password \
-  --provisioner-password-file $STEPPATH/secrets/provisioner_password
-rm -v $STEPPATH/secrets/provisioner_password
+  --password-file ${STEPPATH}/secrets/ca_key_password \
+  --provisioner-password-file ${STEPPATH}/secrets/provisioner_password
+rm -v ${STEPPATH}/secrets/provisioner_password
 ```
 
 ### Alter the Config to suit the Container 
 
 Rewrite host paths to container paths 
 ```
-sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/ca.json
-sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/defaults.json
+sed -i "s|${STEPPATH}|/home/step|g" ${STEPPATH}/config/ca.json
+sed -i "s|${STEPPATH}|/home/step|g" ${STEPPATH}/config/defaults.json
 ```
 
 ### Set up the podman container
@@ -114,10 +114,10 @@ Install podman
 apt install -y podman
 ```
 
-Add a system user for stepca and give it acces to files.
+Add a system user for stepca and give it access to files.
 ```
-sudo useradd --system --uid 2000 --home $STEPPATH --shell /usr/sbin/nologin stepca
-sudo chown -R 2000:2000 $STEPPATH
+sudo useradd --system --uid 2000 --home ${STEPPATH} --shell /usr/sbin/nologin stepca
+sudo chown -R 2000:2000 ${STEPPATH}
 ```
 
 ```
@@ -125,7 +125,7 @@ podman rm -f step-ca
 podman run -d \
   --name step-ca \
   -p 443:443 \
-  -v $STEPPATH:/home/step:Z \
+  -v ${STEPPATH}:/home/step:Z \
   --user 2000:2000 \
   --restart=unless-stopped \
   --health-cmd="step-ca health https://127.0.0.1:443" \
@@ -139,6 +139,8 @@ podman logs step-ca
 ### Install the RootCA in the local trust store
 
 For Debian / Ubuntu
+We temporarily disable certificate verification in curl because the Root CA
+is not trusted on the client yet.
 ```
 sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
   https://ca.lab.lan/roots.pem \
