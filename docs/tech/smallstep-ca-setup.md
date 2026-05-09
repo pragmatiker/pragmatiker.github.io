@@ -125,6 +125,7 @@ podman run -d \
 
 ## Setup trust on clients
 
+### Install the RootCA in the local trust store
 
 For Debian / Ubuntu
 ```
@@ -133,4 +134,15 @@ sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
   --no-check-certificate
 
 sudo update-ca-certificates
+```
+
+### Test SSL trust with curl
+
+```
+curl https://ca.lab.lan/health
+```
+
+expected result
+```
+{"status":"ok"}
 ```
