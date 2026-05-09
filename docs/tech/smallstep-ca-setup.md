@@ -138,7 +138,7 @@ sudo podman run -d \
   --health-cmd="step-ca health https://127.0.0.1:443" \
   docker.io/smallstep/step-ca \
   step-ca /home/step/config/ca.json --password-file /home/step/secrets/ca_key_password
-podman logs step-ca
+sudo podman logs step-ca
 ```
 
 ## Setup trust on clients
