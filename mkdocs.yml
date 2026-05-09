@@ -47,9 +47,9 @@ nav:
 - Tech:
   - Home Lab:
     - Home lab lan Structure: tech/home-lab-lan.md
+    - Using ProxMox with WiFi: tech/use-proxmox-with-wifi.md
     - Router VM for my ProxMox Lab: tech/router-vm-for-proxmox-lab.md
     - First steps with bootc: tech/first-bootc-steps.md
-    - Using ProxMox with WiFi: tech/use-proxmox-with-wifi.md
     - Set up Gitlab: tech/set-up-gitlab.md
     - Set up BIND for ProxMox lab: tech/dns-for-lab.md
     - Set up Smallstep CA: tech/smallstep-ca-setup.md
