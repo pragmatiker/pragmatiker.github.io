@@ -7,9 +7,7 @@ tags:
   - devops
 ---
 
-
 So lets setup a small CA so we can use SSL in our lab
-
 
 ## Goals
 - Two Tier setup Root CA & Intermediate CA
@@ -64,18 +62,19 @@ step certificate create "My Root CA" root.crt root.key \
 
 ### Set up the Intermediate Certificate Authority
 
-Create Dirs for Secrets. This will contain private keys and passwordfile
+This will contain private keys and password files.
 ```
 export STEPPATH=/opt/step/ca
 mkdir -p $STEPPATH/secrets
 ```
 
-Store the Intermediate passphrase
+Store the Intermediate CA key password.
 ```
 echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
 ```
 
-Store the initial provisioner passphrase.
+The provisioner password is only needed during initialization.
+The running CA only requires access to the Intermediate CA key password.
 Put this in PW Manager. We will delete this file after init.
 ```
 echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
@@ -83,7 +82,7 @@ echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
 
 Sign the Intermediate with the existing Root CA and generate a Config.
 You will be asked for the Root Ca Passphrase.
-Provisioner and Ca key will be passed in via the files generate dearlier
+Provisioner and Ca key will be passed in via the files generated dearlier
 
 ```
 step ca init \
