@@ -51,7 +51,8 @@ sudo apt install step-cli
 
 ### Set UP the Root Certificate Authority
 
-First the Root CA
+First the Root CA.
+Store this offline, give it a strong Password.
 
 ```
 sudo mkdir -p /opt/step-root
@@ -63,7 +64,10 @@ step certificate create "My Root CA" root.crt root.key \
 
 ### Set up the Intermediate Certificate Authority
 
-Sign the Intermediate with the existing Root CA and generate a Config
+Sign the Intermediate with the existing Root CA and generate a Config.
+You will be asked for the Root Ca Passphrase and for a Passphrase for the new,
+intermediate CA.
+
 
 ```
 mkdir -p /opt/step-intermediate
@@ -78,6 +82,17 @@ step ca init \
   --deployment-type standalone \
   --provisioner ca@lab.lan
 ```
+
+### Change paths in confing to match paths inside Container.
+
+step ca init put everything under /$HOME/.step.
+This only works if you have a local step user 
+
+```
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
+```
+
 
 ### Copy created Config and Certs to podman location
 ```
@@ -101,11 +116,11 @@ sudo chown -R 2000:2000 /opt/step/ca
 podman rm -f step-ca
 podman run -d \
   --name step-ca \
-  -p 443:9000 \
+  -p 443:443 \
   -v /opt/step/ca:/home/step:Z \
   --user 2000:2000 \
   --restart=unless-stopped \
-  --health-cmd="step-ca health https://127.0.0.1:9000" \
+  --health-cmd="step-ca health https://127.0.0.1:443" \
   docker.io/smallstep/step-ca \
   step-ca /home/step/config/ca.json --password-file /home/step/secrets/password
 ```
