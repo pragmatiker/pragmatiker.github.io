@@ -53,8 +53,8 @@ First the Root CA.
 The Root CA should remain offline after signing the Intermediate CA.
 Daily certificate issuance is handled by the Intermediate CA.
 ```
-export ROOTCA=/opt/RootCA
-sudo install -d -m 700 ${ROOTCA}
+export ROOTCA=${HOME}/RootCA
+install -d -m 700 ${ROOTCA}
 cd ${ROOTCA}
 
 step certificate create "My Root CA" root.crt root.key \
@@ -65,7 +65,7 @@ step certificate create "My Root CA" root.crt root.key \
 
 This will contain private keys and password files.
 ```
-export STEPPATH=/opt/step-ca
+export STEPPATH=${HOME}/step-ca
 install -d -m 700 ${STEPPATH}/secrets
 ```
 
@@ -107,11 +107,17 @@ sed -i "s|${STEPPATH}|/home/step|g" ${STEPPATH}/config/ca.json
 sed -i "s|${STEPPATH}|/home/step|g" ${STEPPATH}/config/defaults.json
 ```
 
+Move Files from user to system location and reset STEPPATH var.
+```
+sudo cp -avi ${STEPPATH}/* /opt/step-ca
+export STEPPATH=/opt/step-ca
+```
+
 ### Set up the podman container
 
 Install podman
 ```
-apt install -y podman
+sudo apt install -y podman
 ```
 
 Add a system user for stepca and give it access to files.
@@ -139,7 +145,7 @@ podman logs step-ca
 ### Install the RootCA in the local trust store
 
 For Debian / Ubuntu
-We temporarily disable certificate verification in curl because the Root CA
+We temporarily disable certificate verification because the Root CA
 is not trusted on the client yet.
 ```
 sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
