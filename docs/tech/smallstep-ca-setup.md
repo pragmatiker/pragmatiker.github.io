@@ -93,8 +93,8 @@ echo 'CaPa$$word' > $STEPPATH/secrets/password
 
 Transform paths in configs to match paths inside Container environment. 
 ```
-sed -i 's|$STEPPATH|/home/step|g' $STEPPATH/config/ca.json
-sed -i 's|$STEPPATH|/home/step|g' $STEPPATH/config/defaults.json
+sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/ca.json
+sed -i "s|$STEPPATH|/home/step|g" $STEPPATH/config/defaults.json
 ```
 
 ### Set up the podman container
