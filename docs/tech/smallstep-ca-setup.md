@@ -53,8 +53,9 @@ First the Root CA.
 Store this offline, give it a strong Password.
 
 ```
-sudo mkdir -p /opt/step-root
-cd /opt/step-root
+export ROOTCA=/opt/RootCA
+sudo mkdir -p $ROOTCA
+cd $ROOTCA
 
 step certificate create "My Root CA" root.crt root.key \
 --profile root-ca --kty RSA --size 4096
@@ -64,13 +65,13 @@ step certificate create "My Root CA" root.crt root.key \
 
 This will contain private keys and password files.
 ```
-export STEPPATH=/opt/step/ca
+export STEPPATH=/opt/step-ca
 mkdir -p $STEPPATH/secrets
 ```
 
 Store the Intermediate CA key password.
 ```
-echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
+umask 0077; echo 'CaPa$$word' > $STEPPATH/secrets/ca_key_password
 ```
 
 The provisioner password is only needed during initialization.
@@ -87,8 +88,8 @@ Provisioner and Ca key will be passed in via the files generated dearlier
 ```
 step ca init \
   --name "My Existing CA" \
-  --root /opt/step-root/root.crt \
-  --key /opt/step-root/root.key \
+  --root $ROOTCA/root.crt \
+  --key $ROOTCA/root.key \
   --dns ca.lab.lan \
   --address :443 \
   --deployment-type standalone \
