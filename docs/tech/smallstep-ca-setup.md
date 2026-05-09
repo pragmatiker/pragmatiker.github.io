@@ -131,7 +131,7 @@ podman run -d \
 For Debian / Ubuntu
 ```
 sudo wget -O /usr/local/share/ca-certificates/lab-root-ca.crt \
-  https://ca.lab.lan/root_ca.crt \
+  https://ca.lab.lan/roots.pem \
   --no-check-certificate
 
 sudo update-ca-certificates
