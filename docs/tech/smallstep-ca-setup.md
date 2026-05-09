@@ -30,7 +30,7 @@ curl -fsSL https://packages.smallstep.com/keys/apt/repo-signing-key.gpg \
   | sudo tee /etc/apt/keyrings/smallstep.asc >/dev/null
 ```
 
-Setu the repo
+Set up the repo
 
 ```
 sudo tee /etc/apt/sources.list.d/smallstep.sources >/dev/null <<'EOF'
@@ -64,7 +64,7 @@ step certificate create "My Root CA" root.crt root.key \
 
 ### Set up the Intermediate Certificate Authority
 
-Create Dirs for Secrets. This will contain pricate keys and 
+Create Dirs for Secrets. This will contain private keys and passwordfile
 ```
 export STEPPATH=/opt/step/ca
 mkdir -p $STEPPATH/secrets
@@ -86,9 +86,6 @@ You will be asked for the Root Ca Passphrase.
 Provisioner and Ca key will be passed in via the files generate dearlier
 
 ```
-mkdir -p /opt/step-intermediate
-cd /opt/step-intermediate
-
 step ca init \
   --name "My Existing CA" \
   --root /opt/step-root/root.crt \
@@ -102,7 +99,7 @@ step ca init \
 rm -v $STEPPATH/secrets/provisioner_password
 ```
 
-### Alter the Config to suite Container 
+### Alter the Config to suit the Container 
 
 Rewrite host paths to container paths 
 ```
