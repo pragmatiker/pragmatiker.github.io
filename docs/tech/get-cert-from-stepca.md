@@ -63,4 +63,12 @@ export FP=$(curl -s  https://ca.lab.lan/roots.pem | openssl x509 -noout -sha256 
 step ca bootstrap \
   --ca-url https://ca.lab.lan \
   --fingerprint $FP
-``
+```
+
+### Request a cert
+
+This is not like ACME, there will be no http or DNS challenge
+
+```
+step ca certificate registry.lab.lan registry.lab.lan.crt registry.lab.lan.key
+```
