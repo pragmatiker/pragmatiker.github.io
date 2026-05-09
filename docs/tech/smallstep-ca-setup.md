@@ -78,7 +78,7 @@ The provisioner password is only needed during initialization.
 The running CA only requires access to the Intermediate CA key password.
 Put this in PW Manager. We will delete this file after init.
 ```
-echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
+umask 0077; echo 'ProvPa$$word' > $STEPPATH/secrets/provisioner_password
 ```
 
 Sign the Intermediate with the existing Root CA and generate a Config.
@@ -118,7 +118,6 @@ Add a system user for stepca and give it acces to files.
 ```
 sudo useradd --system --uid 2000 --home $STEPPATH --shell /usr/sbin/nologin stepca
 sudo chown -R 2000:2000 $STEPPATH
-sudo chmod 600 $STEPPATH/secrets/*
 ```
 
 ```
@@ -132,6 +131,7 @@ podman run -d \
   --health-cmd="step-ca health https://127.0.0.1:443" \
   docker.io/smallstep/step-ca \
   step-ca /home/step/config/ca.json --password-file /home/step/secrets/ca_key_password
+podman logs step-ca
 ```
 
 ## Setup trust on clients
