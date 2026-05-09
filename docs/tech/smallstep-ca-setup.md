@@ -83,16 +83,6 @@ step ca init \
   --provisioner ca@lab.lan
 ```
 
-### Change paths in confing to match paths inside Container.
-
-step ca init put everything under /$HOME/.step.
-This only works if you have a local step user 
-
-```
-sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
-sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
-```
-
 
 ### Copy created Config and Certs to podman location
 ```
@@ -100,13 +90,22 @@ mkdir -p /opt/step/ca
 cp -av /root/.step/* /opt/step/ca
 echo "CaPa$$word" > /opt/step/ca/secrets/password
 ```
+Transform paths to match Container environment.
+step ca init put everything under /$HOME/.step.
+This only works if you have a local step user 
+
+```
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
+sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/defaults.json
 
 ### Set up the podman container
 
+Install podman
 ```
 apt install -y podman
 ```
 
+Add a system user for stepca and give it acces to files.
 ```
 sudo useradd --system --uid 2000 --home /nonexistent --shell /usr/sbin/nologin stepca
 sudo chown -R 2000:2000 /opt/step/ca
