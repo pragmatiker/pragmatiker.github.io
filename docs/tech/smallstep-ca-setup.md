@@ -117,6 +117,7 @@ Add a system user for stepca and give it acces to files.
 ```
 sudo useradd --system --uid 2000 --home $STEPPATH --shell /usr/sbin/nologin stepca
 sudo chown -R 2000:2000 $STEPPATH
+sudo chmod 600 $STEPPATH/secrets/*
 ```
 
 ```
