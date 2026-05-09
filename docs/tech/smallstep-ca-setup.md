@@ -90,6 +90,7 @@ Store the Intermediate passphrase
 ```
 echo 'CaPa$$word' > $STEPPATH/secrets/password
 ```
+
 Transform paths in configs to match paths inside Container environment. 
 ```
 sed -i 's#/root/.step#/home/step#g' /opt/step/ca/config/ca.json
